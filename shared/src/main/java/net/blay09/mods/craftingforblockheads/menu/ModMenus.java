@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 public class ModMenus {
 
     public static DeferredObject<MenuType<WorkshopMenu>> workbench;
+    public static DeferredObject<MenuType<WorkshopMenu>> workbenchItem;
 
     public static void initialize(BalmMenus menus) {
         workbench = menus.registerMenu(id("workbench"), (windowId, inv, data) -> {
@@ -18,6 +19,12 @@ public class ModMenus {
             final var pos = data.readBlockPos();
             final var workshop = new WorkshopImpl(level, pos);
             return new WorkshopMenu(workbench.get(), windowId, inv.player, workshop);
+        });
+
+        workbenchItem = menus.registerMenu(id("workbench_item"), (windowId, inv, data) -> {
+            final var itemStack = data.readItem();
+            final var workshop = new WorkshopImpl(itemStack);
+            return new WorkshopMenu(workbenchItem.get(), windowId, inv.player, workshop);
         });
     }
 

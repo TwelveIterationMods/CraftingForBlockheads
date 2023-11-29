@@ -8,6 +8,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 public class ModBlockTags {
+    public static final TagKey<Block> WORKSHOP_CORE = TagKey.create(Registries.BLOCK,
+            new ResourceLocation(CraftingForBlockheads.MOD_ID, "workshop_core"));
     public static final TagKey<Block> WORKSHOP_ITEM_PROVIDER = TagKey.create(Registries.BLOCK,
             new ResourceLocation(CraftingForBlockheads.MOD_ID, "workshop_item_providers"));
     public static final TagKey<Block> WORKSHOP_CONNECTORS = TagKey.create(Registries.BLOCK,

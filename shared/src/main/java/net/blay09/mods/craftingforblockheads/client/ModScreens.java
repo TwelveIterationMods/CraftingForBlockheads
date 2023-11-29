@@ -7,5 +7,6 @@ import net.blay09.mods.craftingforblockheads.menu.ModMenus;
 public class ModScreens {
     public static void initialize(BalmScreens screens) {
         screens.registerScreen(ModMenus.workbench::get, WorkshopScreen::new);
+        screens.registerScreen(ModMenus.workbenchItem::get, WorkshopScreen::new);
     }
 }

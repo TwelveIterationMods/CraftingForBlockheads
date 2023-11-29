@@ -1,20 +1,34 @@
 package net.blay09.mods.craftingforblockheads;
 
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.api.event.UseBlockEvent;
+import net.blay09.mods.balm.api.event.UseItemEvent;
 import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
 import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
+import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsAPI;
 import net.blay09.mods.craftingforblockheads.block.ModBlocks;
+import net.blay09.mods.craftingforblockheads.crafting.WorkshopImpl;
 import net.blay09.mods.craftingforblockheads.menu.ModMenus;
 import net.blay09.mods.craftingforblockheads.item.ModItems;
+import net.blay09.mods.craftingforblockheads.menu.WorkshopMenu;
 import net.blay09.mods.craftingforblockheads.network.ModNetworking;
 import net.blay09.mods.craftingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.craftingforblockheads.registry.CraftingForBlockheadsRegistry;
 import net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader;
+import net.blay09.mods.craftingforblockheads.tag.ModBlockTags;
+import net.blay09.mods.craftingforblockheads.tag.ModItemTags;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
@@ -83,6 +97,58 @@ public class CraftingForBlockheads {
         Balm.getEvents().onEvent(ServerStartedEvent.class, event -> {
             RecipeManager recipeManager = event.getServer().getRecipeManager();
             CraftingForBlockheadsRegistry.reload(recipeManager, event.getServer().registryAccess());
+        });
+
+        Balm.getEvents().onEvent(UseBlockEvent.class, event -> {
+            final var player = event.getPlayer();
+            final var level = player.level();
+            final var pos = event.getHitResult().getBlockPos();
+            final var state = level.getBlockState(pos);
+            if (state.is(ModBlockTags.WORKSHOP_CORE)) {
+                Balm.getNetworking().openGui(player, new BalmMenuProvider() {
+                    @Override
+                    public Component getDisplayName() {
+                        return Component.translatable("container.craftingforblockheads.workbench");
+                    }
+
+                    @Override
+                    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+                        return new WorkshopMenu(ModMenus.workbench.get(), i, player, new WorkshopImpl(level, pos));
+                    }
+
+                    @Override
+                    public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+                        buf.writeBlockPos(pos);
+                    }
+                });
+                event.setResult(InteractionResult.SUCCESS);
+                event.setCanceled(true);
+            }
+        });
+
+        Balm.getEvents().onEvent(UseItemEvent.class, event -> {
+            final var player = event.getPlayer();
+            final var itemStack = player.getItemInHand(event.getHand());
+            if (itemStack.is(ModItemTags.WORKSHOP_CORE)) {
+                Balm.getNetworking().openGui(player, new BalmMenuProvider() {
+                    @Override
+                    public Component getDisplayName() {
+                        return Component.translatable("container.craftingforblockheads.workbench");
+                    }
+
+                    @Override
+                    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+                        return new WorkshopMenu(ModMenus.workbenchItem.get(), i, player, new WorkshopImpl(itemStack));
+                    }
+
+                    @Override
+                    public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+                        buf.writeItem(itemStack);
+                    }
+                });
+                event.setResult(InteractionResult.SUCCESS);
+                event.setCanceled(true);
+            }
         });
     }
 
