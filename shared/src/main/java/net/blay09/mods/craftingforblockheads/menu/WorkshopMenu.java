@@ -8,6 +8,7 @@ import net.blay09.mods.craftingforblockheads.crafting.CraftingContext;
 import net.blay09.mods.craftingforblockheads.crafting.WorkshopImpl;
 import net.blay09.mods.craftingforblockheads.api.WorkshopFilter;
 import net.blay09.mods.craftingforblockheads.network.message.*;
+import net.blay09.mods.craftingforblockheads.tag.ModItemTags;
 import net.blay09.mods.craftingforblockheads.util.CraftableComparator;
 import net.blay09.mods.craftingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.craftingforblockheads.menu.slot.CraftableFakeSlot;
@@ -272,6 +273,10 @@ public class WorkshopMenu extends AbstractContainerMenu {
                             .stream()
                             .filter(it -> !fulfilledPredicates.contains(it))
                             .collect(Collectors.toSet());
+                    if (!missingPredicates.isEmpty() && resultItem.is(ModItemTags.SECRET)) {
+                        continue;
+                    }
+
                     final var recipeWithStatus = new RecipeWithStatus(recipe.getId(),
                             resultItem,
                             missingPredicates,
@@ -331,6 +336,9 @@ public class WorkshopMenu extends AbstractContainerMenu {
                     .filter(it -> !fulfilledPredicates.contains(it))
                     .collect(Collectors.toSet());
             final var recipeResultItem = recipe.getResultItem(player.level().registryAccess());
+            if (!missingPredicates.isEmpty() && recipeResultItem.is(ModItemTags.SECRET)) {
+                continue;
+            }
             result.add(new RecipeWithStatus(recipe.getId(),
                     recipeResultItem,
                     missingPredicates,
