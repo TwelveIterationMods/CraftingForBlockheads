@@ -14,7 +14,6 @@
   "tooltip.craftingforblockheads.click_to_lock": "Right-Click to lock variant",
   "tooltip.craftingforblockheads.click_to_unlock": "Right-Click to reset variant",
   "tooltip.craftingforblockheads.scroll_to_switch": "Scroll to select item",
-  "tooltip.craftingforblockheads.missing_metalworking": "Requires Anvil",
   "itemGroup.craftingforblockheads.craftingforblockheads": "Crafting for Blockheads",
   "config.craftingforblockheads": "Crafting for Blockheads",
   "rei.craftingforblockheads.workshop.title": "Workshop"
