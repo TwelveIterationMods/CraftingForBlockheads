@@ -1,5 +1,6 @@
 package net.blay09.mods.craftingforblockheads.registry.json;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
 import net.blay09.mods.craftingforblockheads.registry.CraftingForBlockheadsRegistry;
@@ -20,9 +21,12 @@ public record JsonProviderData(String modId, String preset, List<Ingredient> cra
     public static JsonProviderData fromJson(JsonObject jsonObject) {
         final var modId = GsonHelper.getAsString(jsonObject, "modid");
         final var preset = GsonHelper.getAsString(jsonObject, "preset");
-        final var craftables = itemsFromJson(GsonHelper.getAsJsonArray(jsonObject, "craftables"));
-        final var predicates = predicatesFromJson(GsonHelper.getAsJsonObject(jsonObject, "predicates"));
+        final var craftables = itemsFromJson(GsonHelper.getAsJsonArray(jsonObject, "craftables", new JsonArray()));
+        final var predicates = predicatesFromJson(GsonHelper.getAsJsonObject(jsonObject, "predicates", new JsonObject()));
         final var filters = filtersFromJson(GsonHelper.getAsJsonObject(jsonObject, "filters"));
+        for (JsonProviderFilterData filter : filters) {
+            craftables.addAll(filter.includes());
+        }
         return new JsonProviderData(modId, preset, craftables, predicates, filters);
     }
 
