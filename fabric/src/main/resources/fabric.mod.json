@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "craftingforblockheads",
+  "version": "${version}",
+
+  "name": "Crafting for Blockheads",
+  "description": "",
+  "authors": [
+    "BlayTheNinth"
+  ],
+  "contact": {
+    "homepage": "https://mods.twelveiterations.com/mc/craftingforblockheads",
+    "sources": "https://github.com/TwelveIterationMods/CraftingForBlockheads",
+    "issues": "https://github.com/TwelveIterationMods/CraftingForBlockheads/issues"
+  },
+
+  "license": "All Rights Reserved",
+  "icon": "craftingforblockheads-icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.blay09.mods.craftingforblockheads.FabricCraftingForBlockheads"
+    ],
+    "client": [
+      "net.blay09.mods.craftingforblockheads.client.FabricCraftingForBlockheadsClient"
+    ],
+    "modmenu": [
+      "net.blay09.mods.craftingforblockheads.compat.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+  ],
+  "depends": {
+    "balm-fabric": ">=7.0.0",
+    "fabricloader": ">=0.14.21",
+    "fabric-api": "*",
+    "minecraft": ">=1.20",
+    "java": ">=17"
+  },
+  "suggests": {
+    "modmenu": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/VAfZ2Nau6j"
+      }
+    }
+  }
+}

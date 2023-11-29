@@ -1,0 +1,34 @@
+modLoader="javafml"
+loaderVersion="${forge_loader_version_range}"
+license="All rights reserved"
+issueTrackerURL="https://github.com/TwelveIterationMods/CraftingForBlockheads/issues"
+
+[[mods]]
+modId="craftingforblockheads"
+version="${mod_version}"
+displayName="CraftingForBlockheads"
+displayURL="https://mods.twelveiterations.com/mc/craftingforblockheads"
+logoFile="craftingforblockheads-icon.png"
+credits="BlayTheNinth"
+authors="BlayTheNinth"
+description='''
+'''
+
+[[dependencies.craftingforblockheads]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version_range}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.craftingforblockheads]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.craftingforblockheads]]
+    modId="balm"
+    mandatory=true
+    versionRange="${balm_version_range}"
+    ordering="NONE"
+    side="BOTH"

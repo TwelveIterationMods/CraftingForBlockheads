@@ -1,0 +1,21 @@
+{
+  "block.craftingforblockheads.workbench": "Workbench",
+  "container.craftingforblockheads.workbench": "Workbench",
+  "tooltip.craftingforblockheads.multiblock_workshop": "Multiblock Workshop",
+  "tooltip.craftingforblockheads.dyeable": "Dyeable",
+  "tooltip.craftingforblockheads.workbench.description": "Enables crafting abilities.",
+  "gui.craftingforblockheads.no_craftables": "No\\nitems\\nunlocked",
+  "gui.craftingforblockheads.no_selection": "No item\\nselected",
+  "tooltip.craftingforblockheads.click_to_see_recipe": "Click to see recipe",
+  "tooltip.craftingforblockheads.click_to_craft_one": "Click again to craft",
+  "tooltip.craftingforblockheads.click_to_craft_stack": "Shift-Click to craft a stack",
+  "tooltip.craftingforblockheads.missing_ingredients": "Missing ingredients",
+  "tooltip.craftingforblockheads.sort_by_name": "Sort by Name",
+  "tooltip.craftingforblockheads.click_to_lock": "Right-Click to lock variant",
+  "tooltip.craftingforblockheads.click_to_unlock": "Right-Click to reset variant",
+  "tooltip.craftingforblockheads.scroll_to_switch": "Scroll to select item",
+  "tooltip.craftingforblockheads.missing_metalworking": "Requires Anvil",
+  "itemGroup.craftingforblockheads.craftingforblockheads": "Crafting for Blockheads",
+  "config.craftingforblockheads": "Crafting for Blockheads",
+  "rei.craftingforblockheads.workshop.title": "Workshop"
+}
