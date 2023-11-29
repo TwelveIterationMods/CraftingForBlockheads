@@ -13,4 +13,6 @@ public interface CraftingForBlockheadsProvider {
     Map<String, WorkshopPredicate> getPredicates();
 
     Collection<Ingredient> getCraftables();
+
+    Collection<WorkshopGroup> getGroups();
 }

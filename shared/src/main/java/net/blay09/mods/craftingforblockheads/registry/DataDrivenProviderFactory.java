@@ -2,6 +2,7 @@ package net.blay09.mods.craftingforblockheads.registry;
 
 import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsProvider;
 import net.blay09.mods.craftingforblockheads.api.WorkshopFilter;
+import net.blay09.mods.craftingforblockheads.api.WorkshopGroup;
 import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
 import net.blay09.mods.craftingforblockheads.registry.json.JsonProviderData;
 import net.blay09.mods.craftingforblockheads.registry.json.JsonProviderFilterData;
@@ -84,6 +85,11 @@ public class DataDrivenProviderFactory {
             @Override
             public Map<String, WorkshopPredicate> getPredicates() {
                 return data.predicates();
+            }
+
+            @Override
+            public Collection<WorkshopGroup> getGroups() {
+                return data.groups();
             }
         };
     }

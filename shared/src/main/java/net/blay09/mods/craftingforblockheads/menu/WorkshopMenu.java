@@ -23,6 +23,7 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -118,7 +119,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
             Slot slot = slots.get(slotNumber);
             if (slot instanceof CraftableFakeSlot craftableSlot) {
                 if (player.level().isClientSide) {
-                    if (selectedCraftable != null && craftableSlot.getCraftable() == selectedCraftable) {
+                    if (isSelectedSlot(craftableSlot)) {
                         if (clickType == ClickType.PICKUP || clickType == ClickType.PICKUP_ALL || clickType == ClickType.QUICK_MOVE || clickType == ClickType.CLONE) {
                             requestCraft(clickType == ClickType.QUICK_MOVE, clickType == ClickType.CLONE);
                             handled = true;
@@ -191,6 +192,8 @@ public class WorkshopMenu extends AbstractContainerMenu {
 
     public void selectCraftable(@Nullable RecipeWithStatus craftable) {
         selectedCraftable = craftable;
+        resetSelectedRecipe();
+        updateCraftableSlots();
 
         if (craftable != null) {
             if (player.level().isClientSide) {
@@ -258,6 +261,10 @@ public class WorkshopMenu extends AbstractContainerMenu {
                         continue;
                     }
 
+                    if (isGroupItem(resultItem)) {
+                        continue;
+                    }
+
                     final var operation = context.createOperation(recipe).prepare();
                     final var itemRequirements = CraftingForBlockheadsRegistry.getItemRequirements(resultItem);
                     final var fulfilledPredicates = workshop.getFulfilledPredicates(player);
@@ -278,6 +285,32 @@ public class WorkshopMenu extends AbstractContainerMenu {
         }
     }
 
+    private boolean isGroupItem(ItemStack resultItem) {
+        final var itemId = Balm.getRegistries().getKey(resultItem.getItem());
+        for (final var group : CraftingForBlockheadsRegistry.getGroups()) {
+            final var groupItemId = Balm.getRegistries().getKey(group.getParentItem());
+            if (groupItemId.equals(itemId)) {
+                continue;
+            }
+
+            for (final var ingredient : group.getChildren()) {
+                if (ingredient.test(resultItem)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private Collection<Recipe<?>> getRecipesFor(ItemStack resultItem) {
+        final var recipes = new ArrayList<>(CraftingForBlockheadsRegistry.getRecipesFor(resultItem));
+        if (resultItem.getItem() == Items.OAK_BUTTON) {
+            recipes.addAll(CraftingForBlockheadsRegistry.getRecipesInGroup(resultItem));
+        }
+        return recipes;
+    }
+
     public void broadcastCraftables(@Nullable String filterId) {
         final var filter = workshop.getAvailableFilters(player).get(filterId);
         craftables = getAvailableCraftables(filter);
@@ -288,7 +321,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
         final List<RecipeWithStatus> result = new ArrayList<>();
 
         final var context = new CraftingContext(workshop, player);
-        final var recipesForResult = CraftingForBlockheadsRegistry.getRecipesFor(resultItem);
+        final var recipesForResult = getRecipesFor(resultItem);
         for (Recipe<?> recipe : recipesForResult) {
             final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs).prepare();
             final var itemRequirements = CraftingForBlockheadsRegistry.getItemRequirements(resultItem);
@@ -297,14 +330,16 @@ public class WorkshopMenu extends AbstractContainerMenu {
                     .stream()
                     .filter(it -> !fulfilledPredicates.contains(it))
                     .collect(Collectors.toSet());
+            final var recipeResultItem = recipe.getResultItem(player.level().registryAccess());
             result.add(new RecipeWithStatus(recipe.getId(),
-                    resultItem,
+                    recipeResultItem,
                     missingPredicates,
                     operation.getMissingIngredients(),
                     operation.getMissingIngredientsMask(),
                     operation.getLockedInputs()));
         }
 
+        this.recipesForSelection = result;
         Balm.getNetworking().sendTo(player, new RecipesListMessage(result));
     }
 
@@ -316,10 +351,13 @@ public class WorkshopMenu extends AbstractContainerMenu {
             return;
         }
 
-        final var craftable = this.craftables.stream().filter(it -> it.recipe(player) == recipe).findAny().orElse(null);
+        var craftable = this.craftables.stream().filter(it -> it.recipe(player) == recipe).findAny().orElse(null);
         if (craftable == null) {
-            CraftingForBlockheads.logger.error("Received invalid craft request, unknown recipe {}", recipeId);
-            return;
+            craftable = this.recipesForSelection.stream().filter(it -> it.recipe(player) == recipe).findAny().orElse(null);
+            if (craftable == null) {
+                CraftingForBlockheads.logger.error("Received invalid craft request, unknown recipe {}", recipeId);
+                return;
+            }
         }
 
         if (!craftable.missingPredicates().isEmpty()) {
@@ -405,9 +443,15 @@ public class WorkshopMenu extends AbstractContainerMenu {
 
     public void updateCraftableSlots() {
         int i = scrollOffset * 5;
-        for (CraftableFakeSlot slot : craftableSlots) {
+        for (final var slot : craftableSlots) {
             if (i < filteredItems.size()) {
-                slot.setCraftable(filteredItems.get(i));
+                final var craftable = filteredItems.get(i);
+                if (selectedCraftable != null && ItemStack.isSameItemSameTags(selectedCraftable.resultItem(), craftable.resultItem())) {
+                    final var selectedRecipe = getSelectedRecipe();
+                    slot.setCraftable(selectedRecipe != null ? selectedRecipe : craftable);
+                } else {
+                    slot.setCraftable(craftable);
+                }
                 i++;
             } else {
                 slot.setCraftable(null);
@@ -416,10 +460,10 @@ public class WorkshopMenu extends AbstractContainerMenu {
     }
 
     private void updateMatrixSlots() {
-        final var recipeWithStatus = recipesForSelection != null ? recipesForSelection.get(recipesForSelectionIndex) : null;
-        if (recipeWithStatus != null) {
-            final var recipe = recipeWithStatus.recipe(player);
-            updateMatrixSlots(recipe, recipeWithStatus);
+        final var selectedRecipe = getSelectedRecipe();
+        if (selectedRecipe != null) {
+            final var recipe = selectedRecipe.recipe(player);
+            updateMatrixSlots(recipe, selectedRecipe);
         } else {
             for (CraftMatrixFakeSlot matrixSlot : matrixSlots) {
                 matrixSlot.setIngredient(Ingredient.EMPTY, ItemStack.EMPTY);
@@ -516,8 +560,10 @@ public class WorkshopMenu extends AbstractContainerMenu {
     }
 
     public boolean isSelectedSlot(CraftableFakeSlot slot) {
-        return selectedCraftable != null && slot.getCraftable() != null && ItemStack.isSameItemSameTags(slot.getCraftable().resultItem(),
-                selectedCraftable.resultItem());
+        final var selectedRecipe = getSelectedRecipe();
+        final var craftable = selectedRecipe != null ? selectedRecipe : selectedCraftable;
+        return craftable != null && slot.getCraftable() != null && ItemStack.isSameItemSameTags(slot.getCraftable().resultItem(),
+                craftable.resultItem());
     }
 
     @Deprecated
@@ -532,7 +578,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
 
     public void setRecipesForSelection(List<RecipeWithStatus> recipes) {
         recipesForSelection = recipes.size() > 0 ? recipes : null;
-        recipesForSelectionIndex = 0;
+        recipesForSelectionIndex = recipesForSelection != null ? Math.max(0, Math.min(recipesForSelection.size() - 1, recipesForSelectionIndex)) : 0;
 
         updateMatrixSlots();
     }
@@ -540,6 +586,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
     public void nextRecipe(int dir) {
         if (recipesForSelection != null) {
             recipesForSelectionIndex = Math.max(0, Math.min(recipesForSelection.size() - 1, recipesForSelectionIndex + dir));
+            updateCraftableSlots();
         }
 
         updateMatrixSlots();

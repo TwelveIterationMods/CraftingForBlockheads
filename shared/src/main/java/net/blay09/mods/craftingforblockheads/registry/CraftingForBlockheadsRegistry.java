@@ -6,16 +6,15 @@ import com.google.gson.JsonObject;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.craftingforblockheads.CraftingForBlockheads;
 import net.blay09.mods.craftingforblockheads.api.*;
-import net.blay09.mods.craftingforblockheads.block.ModBlocks;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Function;
@@ -24,6 +23,7 @@ public class CraftingForBlockheadsRegistry {
 
     private static final List<CraftingForBlockheadsProvider> providers = new ArrayList<>();
     private static final Multimap<ResourceLocation, Recipe<?>> recipesByItemId = ArrayListMultimap.create();
+    private static final Multimap<ResourceLocation, Recipe<?>> recipesByGroup = ArrayListMultimap.create();
     private static final Map<String, Function<JsonObject, WorkshopPredicate>> workshopPredicateDeserializers = new HashMap<>();
     private static final Map<Class<? extends Recipe<?>>, RecipeWorkshopHandler<? extends Recipe<?>>> recipeWorkshopHandlers = new HashMap<>();
 
@@ -72,9 +72,22 @@ public class CraftingForBlockheadsRegistry {
         return Collections.unmodifiableMap(predicates);
     }
 
+    public static List<WorkshopGroup> getGroups() {
+        final var groups = new ArrayList<WorkshopGroup>();
+        for (final var provider : providers) {
+            groups.addAll(provider.getGroups());
+        }
+        return Collections.unmodifiableList(groups);
+    }
+
     public static Collection<Recipe<?>> getRecipesFor(ItemStack resultItem) {
         final var itemId = Balm.getRegistries().getKey(resultItem.getItem());
         return recipesByItemId.get(itemId);
+    }
+
+    public static Collection<? extends Recipe<?>> getRecipesInGroup(ItemStack resultItem) {
+        final var itemId = Balm.getRegistries().getKey(resultItem.getItem());
+        return recipesByGroup.get(itemId);
     }
 
     public static Multimap<ResourceLocation, Recipe<?>> getRecipesByItemId() {
@@ -92,10 +105,21 @@ public class CraftingForBlockheadsRegistry {
 
     private static <T extends Container> void loadRecipesByType(RecipeManager recipeManager, RegistryAccess registryAccess, RecipeType<? extends Recipe<T>> recipeType) {
         for (final var recipe : recipeManager.getAllRecipesFor(recipeType)) {
-            final var output = recipe.getResultItem(registryAccess);
-            if (isEligibleResultItem(output)) {
-                final var itemId = Balm.getRegistries().getKey(output.getItem());
+            final var resultItem = recipe.getResultItem(registryAccess);
+            if (isEligibleResultItem(resultItem)) {
+                final var itemId = Balm.getRegistries().getKey(resultItem.getItem());
                 recipesByItemId.put(itemId, recipe);
+
+                final var groups = getGroups();
+                for (final var group : groups) {
+                    for (final var ingredient : group.getChildren()) {
+                        if (ingredient.test(resultItem)) {
+                            final var groupItemId = Balm.getRegistries().getKey(group.getParentItem());
+                            recipesByGroup.put(groupItemId, recipe);
+                            break;
+                        }
+                    }
+                }
             }
         }
     }

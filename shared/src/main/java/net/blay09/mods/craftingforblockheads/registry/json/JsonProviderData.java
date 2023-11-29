@@ -2,10 +2,14 @@ package net.blay09.mods.craftingforblockheads.registry.json;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.craftingforblockheads.api.WorkshopGroup;
 import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
 import net.blay09.mods.craftingforblockheads.registry.CraftingForBlockheadsRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.ArrayList;
@@ -15,19 +19,20 @@ import java.util.Map;
 
 import static net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader.itemsFromJson;
 
-public record JsonProviderData(String modId, String preset, List<Ingredient> craftables, Map<String, WorkshopPredicate> predicates,
+public record JsonProviderData(String modId, String preset, List<Ingredient> craftables, List<WorkshopGroup> groups, Map<String, WorkshopPredicate> predicates,
                                List<JsonProviderFilterData> filters) {
 
     public static JsonProviderData fromJson(JsonObject jsonObject) {
         final var modId = GsonHelper.getAsString(jsonObject, "modid");
         final var preset = GsonHelper.getAsString(jsonObject, "preset");
         final var craftables = itemsFromJson(GsonHelper.getAsJsonArray(jsonObject, "craftables", new JsonArray()));
+        final var groups = groupsFromJson(GsonHelper.getAsJsonObject(jsonObject, "groups", new JsonObject()));
         final var predicates = predicatesFromJson(GsonHelper.getAsJsonObject(jsonObject, "predicates", new JsonObject()));
         final var filters = filtersFromJson(GsonHelper.getAsJsonObject(jsonObject, "filters"));
         for (JsonProviderFilterData filter : filters) {
             craftables.addAll(filter.includes());
         }
-        return new JsonProviderData(modId, preset, craftables, predicates, filters);
+        return new JsonProviderData(modId, preset, craftables, groups, predicates, filters);
     }
 
     private static List<JsonProviderFilterData> filtersFromJson(JsonObject jsonObject) {
@@ -77,4 +82,30 @@ public record JsonProviderData(String modId, String preset, List<Ingredient> cra
         }
     }
 
+    private static List<WorkshopGroup> groupsFromJson(JsonObject jsonObject) {
+        final var groups = new ArrayList<WorkshopGroup>();
+
+        for (final var parentItemId : jsonObject.keySet()) {
+            final var jsonArray = jsonObject.get(parentItemId).getAsJsonArray();
+            final var ingredients = itemsFromJson(jsonArray);
+            final var parentItem = Balm.getRegistries().getItem(new ResourceLocation(parentItemId));
+            if (parentItem == null) {
+                throw new IllegalArgumentException("Unknown item: " + parentItemId);
+            }
+
+            groups.add(new WorkshopGroup() {
+                @Override
+                public Item getParentItem() {
+                    return parentItem;
+                }
+
+                @Override
+                public List<Ingredient> getChildren() {
+                    return ingredients;
+                }
+            });
+        }
+
+        return groups;
+    }
 }
