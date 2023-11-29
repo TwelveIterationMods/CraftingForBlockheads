@@ -269,6 +269,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
                     final var operation = context.createOperation(recipe).prepare();
                     final var itemRequirements = CraftingForBlockheadsRegistry.getItemRequirements(resultItem);
                     final var fulfilledPredicates = workshop.getFulfilledPredicates(player);
+
                     final var missingPredicates = itemRequirements.keySet()
                             .stream()
                             .filter(it -> !fulfilledPredicates.contains(it))
