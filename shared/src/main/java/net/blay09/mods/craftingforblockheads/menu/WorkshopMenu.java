@@ -141,7 +141,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
     public void broadcastChanges() {
         super.broadcastChanges();
         if (craftablesDirty) {
-            broadcastCraftables(currentFilter.getId());
+            broadcastCraftables(currentFilter != null ? currentFilter.getId() : null);
             craftablesDirty = false;
         }
 
@@ -244,8 +244,8 @@ public class WorkshopMenu extends AbstractContainerMenu {
         }
     }
 
-    public List<RecipeWithStatus> getAvailableCraftables(WorkshopFilterWithStatus filter) {
-        if (!filter.available()) {
+    public List<RecipeWithStatus> getAvailableCraftables(@Nullable WorkshopFilterWithStatus filter) {
+        if (filter == null || !filter.available()) {
             return Collections.emptyList();
         } else {
             final var result = new HashMap<ResourceLocation, RecipeWithStatus>();
@@ -278,7 +278,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
         }
     }
 
-    public void broadcastCraftables(String filterId) {
+    public void broadcastCraftables(@Nullable String filterId) {
         final var filter = workshop.getAvailableFilters(player).get(filterId);
         craftables = getAvailableCraftables(filter);
         Balm.getNetworking().sendTo(player, new CraftablesListMessage(craftables));
