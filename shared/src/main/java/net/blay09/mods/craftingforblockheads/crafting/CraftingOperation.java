@@ -12,19 +12,33 @@ import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CraftingOperation {
+
+    public record IngredientTokenKey(int providerIndex, IntList stackingIds) {
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            IngredientTokenKey that = (IngredientTokenKey) o;
+            return providerIndex == that.providerIndex && Objects.equals(stackingIds, that.stackingIds);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(providerIndex, stackingIds);
+        }
+    }
 
     private final CraftingContext context;
     private final Recipe<?> recipe;
 
-    private final Multimap<IntList, IngredientToken> tokensByIngredient = ArrayListMultimap.create();
+    private final Multimap<IngredientTokenKey, IngredientToken> tokensByIngredient = ArrayListMultimap.create();
     private final List<IngredientToken> ingredientTokens = new ArrayList<>();
     private final List<Ingredient> missingIngredients = new ArrayList<>();
 
@@ -53,16 +67,18 @@ public class CraftingOperation {
             final var lockedInput = lockedInputs != null ? lockedInputs.get(i) : ItemStack.EMPTY;
             final var stackingIds = ingredient.getStackingIds();
             final var itemProviders = context.getItemProviders();
+            var found = false;
             for (int j = 0; j < itemProviders.size(); j++) {
                 final var itemProvider = itemProviders.get(j);
                 IngredientToken ingredientToken;
+                final var ingredientTokenKey = new IngredientTokenKey(j, stackingIds);
                 if (lockedInput.isEmpty()) {
-                    ingredientToken = itemProvider.findIngredient(ingredient, tokensByIngredient.get(stackingIds));
+                    ingredientToken = itemProvider.findIngredient(ingredient, tokensByIngredient.get(ingredientTokenKey));
                 } else {
-                    ingredientToken = itemProvider.findIngredient(lockedInput, tokensByIngredient.get(stackingIds));
+                    ingredientToken = itemProvider.findIngredient(lockedInput, tokensByIngredient.get(ingredientTokenKey));
                 }
                 if (ingredientToken != null) {
-                    tokensByIngredient.put(stackingIds, ingredientToken);
+                    tokensByIngredient.put(ingredientTokenKey, ingredientToken);
                     if (ingredient.getItems().length > 1) {
                         if (lockedInputs == null) {
                             lockedInputs = NonNullList.withSize(ingredients.size(), ItemStack.EMPTY);
@@ -70,10 +86,13 @@ public class CraftingOperation {
                         lockedInputs.set(i, ingredientToken.peek());
                     }
                     ingredientTokens.add(ingredientToken);
-                } else {
-                    missingIngredients.add(ingredient);
-                    missingIngredientsMask |= 1 << i;
+                    found = true;
+                    break;
                 }
+            }
+            if (!found) {
+                missingIngredients.add(ingredient);
+                missingIngredientsMask |= 1 << i;
             }
         }
 
