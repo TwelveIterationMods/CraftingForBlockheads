@@ -10,6 +10,7 @@
   "tooltip.craftingforblockheads.click_to_craft_one": "Click again to craft",
   "tooltip.craftingforblockheads.click_to_craft_stack": "Shift-Click to craft a stack",
   "tooltip.craftingforblockheads.missing_ingredients": "Missing ingredients",
+  "tooltip.craftingforblockheads.missing_metalworking": "Requires Anvil",
   "tooltip.craftingforblockheads.sort_by_name": "Sort by Name",
   "tooltip.craftingforblockheads.click_to_lock": "Right-Click to lock variant",
   "tooltip.craftingforblockheads.click_to_unlock": "Right-Click to reset variant",

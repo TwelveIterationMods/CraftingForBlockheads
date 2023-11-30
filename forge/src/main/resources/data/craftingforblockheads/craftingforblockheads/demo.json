@@ -1,0 +1,94 @@
+{
+  "modid": "craftingforblockheads",
+  "preset": "demo",
+  "predicates": {
+    "workbench_used": [
+      {
+        "type": "workshop_core",
+        "block": "craftingforblockheads:workbench"
+      }
+    ],
+    "metalworking": [
+      {
+        "type": "workshop_has",
+        "block": "minecraft:anvil"
+      }
+    ]
+  },
+  "groups": {
+    "minecraft:oak_button": [
+      {
+        "tag": "minecraft:buttons"
+      }
+    ]
+  },
+  "filters": {
+    "craftingforblockheads:tools": {
+      "name": "Tools",
+      "icon": {
+        "item": "minecraft:iron_pickaxe"
+      },
+      "includes": [
+        {
+          "tag": "minecraft:tools"
+        },
+        {
+          "tag": "minecraft:fishing_rods"
+        }
+      ],
+      "excludes": [
+        {
+          "tag": "minecraft:swords"
+        }
+      ],
+      "hard_requirements": ["workbench_used"],
+      "priority": 900
+    },
+    "craftingforblockheads:combat": {
+      "name": "Combat",
+      "icon": {
+        "item": "minecraft:iron_sword"
+      },
+      "includes": [
+        {
+          "tag": "minecraft:swords"
+        },
+        {
+          "tag": "forge:armors"
+        },
+        {
+          "tag": "forge:bows"
+        },
+        {
+          "tag": "forge:shields"
+        }
+      ],
+      "hard_requirements": ["workbench_used"],
+      "soft_requirements": ["metalworking"]
+    },
+    "craftingforblockheads:redstone": {
+      "name": "Redstone",
+      "icon": {
+        "item": "minecraft:redstone"
+      },
+      "includes": [
+        {
+          "item": "minecraft:redstone_torch"
+        },
+        {
+          "item": "minecraft:repeater"
+        },
+        {
+          "item": "minecraft:comparator"
+        },
+        {
+          "item": "minecraft:lever"
+        },
+        {
+          "tag": "minecraft:buttons"
+        }
+      ],
+      "hard_requirements": ["workbench_used"]
+    }
+  }
+}
