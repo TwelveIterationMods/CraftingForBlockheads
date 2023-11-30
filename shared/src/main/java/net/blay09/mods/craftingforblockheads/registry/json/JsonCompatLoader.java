@@ -41,7 +41,7 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
             try (final var reader = new FileReader(simpleFile)) {
                 final var gridProviders = load(gson.fromJson(reader, JsonElement.class));
                 providersFromDataPacks.addAll(gridProviders);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 logger.error("Parsing error loading Crafting for Blockheads data file at {}", simpleFile, e);
             }
         } else {
@@ -63,8 +63,16 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
 
     private static List<CraftingForBlockheadsProvider> load(JsonElement jsonElement) {
         if (jsonElement.isJsonObject()) {
+            if (jsonElement.getAsJsonObject().keySet().isEmpty()) {
+                return Collections.emptyList();
+            }
+
             return Collections.singletonList(load(JsonProviderData.fromJson(jsonElement.getAsJsonObject())));
         } else if (jsonElement.isJsonArray()) {
+            if (jsonElement.getAsJsonArray().size() == 0) {
+                return Collections.emptyList();
+            }
+
             final var providers = new ArrayList<CraftingForBlockheadsProvider>();
             for (JsonElement element : jsonElement.getAsJsonArray()) {
                 providers.addAll(load(element));
