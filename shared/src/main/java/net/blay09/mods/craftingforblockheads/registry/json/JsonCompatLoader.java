@@ -14,6 +14,7 @@ import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +62,11 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
         }
     }
 
-    private static List<CraftingForBlockheadsProvider> load(JsonElement jsonElement) {
+    private static List<CraftingForBlockheadsProvider> load(@Nullable JsonElement jsonElement) {
+        if (jsonElement == null) {
+            return Collections.emptyList();
+        }
+
         if (jsonElement.isJsonObject()) {
             if (jsonElement.getAsJsonObject().keySet().isEmpty()) {
                 return Collections.emptyList();
