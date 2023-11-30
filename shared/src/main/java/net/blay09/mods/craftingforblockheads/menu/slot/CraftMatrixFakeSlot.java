@@ -14,6 +14,7 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
 
     private final NonNullList<ItemStack> visibleStacks = NonNullList.create();
 
+    private int ingredientIndex;
     private Ingredient ingredient;
     private float variantTimePassed;
     private int currentVariantIndex;
@@ -24,7 +25,9 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
         super(container, slotId, x, y);
     }
 
-    public void setIngredient(final Ingredient ingredient, final ItemStack lockedInput) {
+    public void setIngredient(final int ingredientIndex, final Ingredient ingredient, final ItemStack lockedInput) {
+        this.ingredientIndex = ingredientIndex;
+
         final var previousIngredient = this.ingredient;
         var effectiveLockedInput = isLocked ? getItem() : ItemStack.EMPTY;
         if (!lockedInput.isEmpty()) {
@@ -120,5 +123,9 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
     public ItemStack toggleLock() {
         isLocked = !isLocked;
         return isLocked ? getItem() : ItemStack.EMPTY;
+    }
+
+    public int getIngredientIndex() {
+        return ingredientIndex;
     }
 }

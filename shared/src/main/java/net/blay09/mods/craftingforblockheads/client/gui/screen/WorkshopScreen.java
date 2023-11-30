@@ -111,7 +111,7 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
             Slot slot = ((AbstractContainerScreenAccessor) this).getHoveredSlot();
             if (slot instanceof CraftMatrixFakeSlot fakeSlot && fakeSlot.getVisibleStacks().size() > 1) {
                 final var lockedInput = fakeSlot.scrollDisplayListAndLock(delta > 0 ? -1 : 1);
-                menu.setLockedInput(slot.getContainerSlot(), lockedInput);
+                menu.setLockedInput(fakeSlot.getIngredientIndex(), lockedInput);
             }
         } else {
             setCurrentOffset(delta > 0 ? currentOffset - 1 : currentOffset + 1);
@@ -165,7 +165,7 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
                 }
             } else if (button == 1) {
                 final var lockedInput = fakeSlot.toggleLock();
-                menu.setLockedInput(mouseSlot.getContainerSlot(), lockedInput);
+                menu.setLockedInput(fakeSlot.getIngredientIndex(), lockedInput);
             }
             return true;
         }

@@ -4,13 +4,11 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.craftingforblockheads.CraftingForBlockheads;
 import net.blay09.mods.craftingforblockheads.api.Workshop;
-import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
 import net.blay09.mods.craftingforblockheads.crafting.CraftingContext;
 import net.blay09.mods.craftingforblockheads.crafting.WorkshopImpl;
 import net.blay09.mods.craftingforblockheads.api.WorkshopFilter;
 import net.blay09.mods.craftingforblockheads.network.message.*;
 import net.blay09.mods.craftingforblockheads.registry.WorkshopPredicateLevel;
-import net.blay09.mods.craftingforblockheads.tag.ModItemTags;
 import net.blay09.mods.craftingforblockheads.util.CraftableComparator;
 import net.blay09.mods.craftingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.craftingforblockheads.menu.slot.CraftableFakeSlot;
@@ -33,7 +31,6 @@ import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class WorkshopMenu extends AbstractContainerMenu {
 
@@ -498,8 +495,9 @@ public class WorkshopMenu extends AbstractContainerMenu {
             final var recipe = selectedRecipe.recipe(player);
             updateMatrixSlots(recipe, selectedRecipe);
         } else {
-            for (CraftMatrixFakeSlot matrixSlot : matrixSlots) {
-                matrixSlot.setIngredient(Ingredient.EMPTY, ItemStack.EMPTY);
+            for (int i = 0; i < matrixSlots.size(); i++) {
+                CraftMatrixFakeSlot matrixSlot = matrixSlots.get(i);
+                matrixSlot.setIngredient(i, Ingredient.EMPTY, ItemStack.EMPTY);
                 matrixSlot.setMissing(true);
             }
         }
@@ -509,18 +507,23 @@ public class WorkshopMenu extends AbstractContainerMenu {
         final var ingredients = recipe.getIngredients();
         final var matrix = NonNullList.withSize(9, Ingredient.EMPTY);
         final var missingMatrix = new boolean[9];
+        final var ingredientIndexMatrix = new int[9];
         final var recipeTypeHandler = CraftingForBlockheadsRegistry.getRecipeWorkshopHandler(recipe);
         for (int i = 0; i < ingredients.size(); i++) {
             final var ingredient = ingredients.get(i);
             final var matrixSlot = recipeTypeHandler.mapToMatrixSlot(recipe, i);
             matrix.set(matrixSlot, ingredient);
             missingMatrix[matrixSlot] = (status.missingIngredientsMask() & (1 << i)) == (1 << i);
+            ingredientIndexMatrix[matrixSlot] = i;
         }
 
         for (int i = 0; i < matrixSlots.size(); i++) {
+            final var matrixSlot = matrixSlots.get(i);
             final var lockedInputs = status.lockedInputs();
-            matrixSlots.get(i).setIngredient(matrix.get(i), i < lockedInputs.size() ? lockedInputs.get(i) : ItemStack.EMPTY);
-            matrixSlots.get(i).setMissing(missingMatrix[i]);
+            final int ingredientIndex = ingredientIndexMatrix[i];
+            final var lockedInput = lockedInputs.get(ingredientIndex);
+            matrixSlot.setIngredient(ingredientIndex, matrix.get(i), lockedInput);
+            matrixSlot.setMissing(missingMatrix[i]);
         }
     }
 
