@@ -67,7 +67,7 @@ public class WorkshopImpl implements Workshop {
 
                             findNeighbourCraftingBlocks(level, position, true);
                         }
-                    } else if (state.is(ModBlockTags.WORKSHOP_CONNECTORS)) {
+                    } else if (state.is(ModBlockTags.WORKSHOP_CONNECTORS) || state.is(ModBlockTags.WORKSHOP_CORE)) {
                         providedBlocks.add(state.getBlock());
                         state.getTags().forEach(providedBlockTags::add);
 
@@ -125,7 +125,11 @@ public class WorkshopImpl implements Workshop {
         final var result = new HashMap<String, WorkshopFilterWithStatus>();
         for (Map.Entry<String, WorkshopFilter> entry : CraftingForBlockheadsRegistry.getWorkshopFilters().entrySet()) {
             if (fulfilledPredicates.containsAll(entry.getValue().getHardRequirements())) {
-                final var missingPredicates = entry.getValue().getSoftRequirements().stream().filter(predicate -> !fulfilledPredicates.contains(predicate)).collect(Collectors.toSet());
+                final var missingPredicates = entry.getValue()
+                        .getSoftRequirements()
+                        .stream()
+                        .filter(predicate -> !fulfilledPredicates.contains(predicate))
+                        .collect(Collectors.toSet());
                 final var filterWithStatus = new WorkshopFilterWithStatus(entry.getValue(), missingPredicates);
                 result.put(entry.getKey(), filterWithStatus);
             }
