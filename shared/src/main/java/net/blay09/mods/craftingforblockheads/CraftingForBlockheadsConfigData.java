@@ -12,6 +12,6 @@ public class CraftingForBlockheadsConfigData implements BalmConfigData {
 
     @ExpectedType(String.class)
     @Comment("The presets to use for the workbench filters and progression.")
-    public List<String> presets = List.of("demo");
+    public List<String> presets = List.of("default", "demo");
 
 }
