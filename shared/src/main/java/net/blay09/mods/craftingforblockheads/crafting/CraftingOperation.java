@@ -64,6 +64,10 @@ public class CraftingOperation {
         final var ingredients = recipe.getIngredients();
         for (int i = 0; i < ingredients.size(); i++) {
             final var ingredient = ingredients.get(i);
+            if (ingredient.isEmpty()) {
+                continue;
+            }
+
             final var lockedInput = lockedInputs != null ? lockedInputs.get(i) : ItemStack.EMPTY;
             final var stackingIds = ingredient.getStackingIds();
             final var itemProviders = context.getItemProviders();
