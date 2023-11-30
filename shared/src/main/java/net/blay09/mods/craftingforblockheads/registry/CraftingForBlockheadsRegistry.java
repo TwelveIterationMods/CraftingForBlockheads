@@ -151,6 +151,12 @@ public class CraftingForBlockheadsRegistry {
 
     @SuppressWarnings("unchecked")
     public static <T extends Recipe<?>, V extends RecipeWorkshopHandler<T>> V getRecipeWorkshopHandler(T recipe) {
+        for (Class<? extends Recipe<?>> handlerClass : recipeWorkshopHandlers.keySet()) {
+            if (handlerClass.isAssignableFrom(recipe.getClass())) {
+                return (V) recipeWorkshopHandlers.get(handlerClass);
+            }
+        }
+
         return (V) recipeWorkshopHandlers.get(recipe.getClass());
     }
 }
