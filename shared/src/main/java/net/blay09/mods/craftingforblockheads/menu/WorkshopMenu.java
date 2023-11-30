@@ -509,12 +509,14 @@ public class WorkshopMenu extends AbstractContainerMenu {
         final var missingMatrix = new boolean[9];
         final var ingredientIndexMatrix = new int[9];
         final var recipeTypeHandler = CraftingForBlockheadsRegistry.getRecipeWorkshopHandler(recipe);
-        for (int i = 0; i < ingredients.size(); i++) {
-            final var ingredient = ingredients.get(i);
-            final var matrixSlot = recipeTypeHandler.mapToMatrixSlot(recipe, i);
-            matrix.set(matrixSlot, ingredient);
-            missingMatrix[matrixSlot] = (status.missingIngredientsMask() & (1 << i)) == (1 << i);
-            ingredientIndexMatrix[matrixSlot] = i;
+        if (recipeTypeHandler != null) {
+            for (int i = 0; i < ingredients.size(); i++) {
+                final var ingredient = ingredients.get(i);
+                final var matrixSlot = recipeTypeHandler.mapToMatrixSlot(recipe, i);
+                matrix.set(matrixSlot, ingredient);
+                missingMatrix[matrixSlot] = (status.missingIngredientsMask() & (1 << i)) == (1 << i);
+                ingredientIndexMatrix[matrixSlot] = i;
+            }
         }
 
         for (int i = 0; i < matrixSlots.size(); i++) {
