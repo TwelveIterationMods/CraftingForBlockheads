@@ -4,10 +4,12 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.craftingforblockheads.CraftingForBlockheads;
 import net.blay09.mods.craftingforblockheads.api.Workshop;
+import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
 import net.blay09.mods.craftingforblockheads.crafting.CraftingContext;
 import net.blay09.mods.craftingforblockheads.crafting.WorkshopImpl;
 import net.blay09.mods.craftingforblockheads.api.WorkshopFilter;
 import net.blay09.mods.craftingforblockheads.network.message.*;
+import net.blay09.mods.craftingforblockheads.registry.WorkshopPredicateLevel;
 import net.blay09.mods.craftingforblockheads.tag.ModItemTags;
 import net.blay09.mods.craftingforblockheads.util.CraftableComparator;
 import net.blay09.mods.craftingforblockheads.menu.slot.CraftMatrixFakeSlot;
@@ -269,12 +271,22 @@ public class WorkshopMenu extends AbstractContainerMenu {
                     final var operation = context.createOperation(recipe).prepare();
                     final var itemRequirements = CraftingForBlockheadsRegistry.getItemRequirements(resultItem);
                     final var fulfilledPredicates = workshop.getFulfilledPredicates(player);
+                    final var missingPredicates = new HashSet<String>();
+                    var hasMissingHardPredicates = false;
+                    for (final var entry : itemRequirements.entrySet()) {
+                        final var predicate = entry.getKey();
+                        final var level = entry.getValue();
+                        if (!fulfilledPredicates.contains(predicate)) {
+                            if (level == WorkshopPredicateLevel.HARD) {
+                                hasMissingHardPredicates = true;
+                                break;
+                            } else {
+                                missingPredicates.add(predicate);
+                            }
+                        }
+                    }
 
-                    final var missingPredicates = itemRequirements.keySet()
-                            .stream()
-                            .filter(it -> !fulfilledPredicates.contains(it))
-                            .collect(Collectors.toSet());
-                    if (!missingPredicates.isEmpty() && resultItem.is(ModItemTags.SECRET)) {
+                    if (hasMissingHardPredicates) {
                         continue;
                     }
 
@@ -329,17 +341,29 @@ public class WorkshopMenu extends AbstractContainerMenu {
         final var context = new CraftingContext(workshop, player);
         final var recipesForResult = getRecipesFor(resultItem);
         for (Recipe<?> recipe : recipesForResult) {
+            final var recipeResultItem = recipe.getResultItem(player.level().registryAccess());
             final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs).prepare();
             final var itemRequirements = CraftingForBlockheadsRegistry.getItemRequirements(resultItem);
             final var fulfilledPredicates = workshop.getFulfilledPredicates(player);
-            final var missingPredicates = itemRequirements.keySet()
-                    .stream()
-                    .filter(it -> !fulfilledPredicates.contains(it))
-                    .collect(Collectors.toSet());
-            final var recipeResultItem = recipe.getResultItem(player.level().registryAccess());
-            if (!missingPredicates.isEmpty() && recipeResultItem.is(ModItemTags.SECRET)) {
+            final var missingPredicates = new HashSet<String>();
+            var hasMissingHardPredicates = false;
+            for (final var entry : itemRequirements.entrySet()) {
+                final var predicate = entry.getKey();
+                final var level = entry.getValue();
+                if (!fulfilledPredicates.contains(predicate)) {
+                    if (level == WorkshopPredicateLevel.HARD) {
+                        hasMissingHardPredicates = true;
+                        break;
+                    } else {
+                        missingPredicates.add(predicate);
+                    }
+                }
+            }
+
+            if (hasMissingHardPredicates) {
                 continue;
             }
+
             result.add(new RecipeWithStatus(recipe.getId(),
                     recipeResultItem,
                     missingPredicates,

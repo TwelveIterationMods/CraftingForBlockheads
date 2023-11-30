@@ -8,12 +8,9 @@ import net.blay09.mods.craftingforblockheads.CraftingForBlockheads;
 import net.blay09.mods.craftingforblockheads.api.*;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 
 import java.util.*;
@@ -129,16 +126,22 @@ public class CraftingForBlockheadsRegistry {
         loadRecipesByType(recipeManager, registryAccess, RecipeType.CRAFTING);
     }
 
-    public static Map<String, WorkshopPredicate> getItemRequirements(ItemStack itemStack) {
+    public static Map<String, WorkshopPredicateLevel> getItemRequirements(ItemStack itemStack) {
         final var predicates = getWorkshopPredicates();
-        final var result = new HashMap<String, WorkshopPredicate>();
+        final var result = new HashMap<String, WorkshopPredicateLevel>();
         itemStack.getTags().map(TagKey::location).forEach(location -> {
             if (location.getNamespace().equals(CraftingForBlockheads.MOD_ID)) {
                 if (location.getPath().startsWith("requires_")) {
                     final var predicateKey = location.getPath().substring("requires_".length());
                     final var predicate = predicates.get(predicateKey);
                     if (predicate != null) {
-                        result.put(predicateKey, predicate);
+                        result.put(predicateKey, WorkshopPredicateLevel.HARD);
+                    }
+                } else if (location.getPath().startsWith("soft_requires_")) {
+                    final var predicateKey = location.getPath().substring("soft_requires_".length());
+                    final var predicate = predicates.get(predicateKey);
+                    if (predicate != null) {
+                        result.put(predicateKey, WorkshopPredicateLevel.SOFT);
                     }
                 }
             }
