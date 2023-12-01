@@ -26,6 +26,8 @@ public class ForgeCraftingForBlockheads {
         ForgeBalmProviders providers = (ForgeBalmProviders) Balm.getProviders();
         providers.register(WorkshopItemProvider.class, new CapabilityToken<>() {
         });
+
+        Balm.initializeIfLoaded("gamestages", "net.blay09.mods.craftingforblockheads.compat.GameStagesCompat");
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
