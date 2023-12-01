@@ -1,9 +1,6 @@
 package net.blay09.mods.craftingforblockheads.registry;
 
-import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsProvider;
-import net.blay09.mods.craftingforblockheads.api.WorkshopFilter;
-import net.blay09.mods.craftingforblockheads.api.WorkshopGroup;
-import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
+import net.blay09.mods.craftingforblockheads.api.*;
 import net.blay09.mods.craftingforblockheads.registry.json.JsonProviderData;
 import net.blay09.mods.craftingforblockheads.registry.json.JsonProviderFilterData;
 import net.minecraft.network.chat.Component;
@@ -40,12 +37,12 @@ public class DataDrivenProviderFactory {
                 }
 
                 @Override
-                public List<Ingredient> getIncludes() {
+                public List<ItemFilter> getIncludes() {
                     return filter.includes();
                 }
 
                 @Override
-                public List<Ingredient> getExcludes() {
+                public List<ItemFilter> getExcludes() {
                     return filter.excludes();
                 }
 
@@ -78,7 +75,7 @@ public class DataDrivenProviderFactory {
             }
 
             @Override
-            public Collection<Ingredient> getCraftables() {
+            public Collection<ItemFilter> getCraftables() {
                 return data.craftables();
             }
 

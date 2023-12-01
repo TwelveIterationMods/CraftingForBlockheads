@@ -15,9 +15,9 @@ public interface WorkshopFilter {
 
     Component getTooltip();
 
-    List<Ingredient> getIncludes();
+    List<ItemFilter> getIncludes();
 
-    List<Ingredient> getExcludes();
+    List<ItemFilter> getExcludes();
 
     Set<String> getHardRequirements();
 

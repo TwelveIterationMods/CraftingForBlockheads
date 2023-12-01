@@ -73,7 +73,10 @@
       },
       "includes": [
         {
-          "item": "minecraft:redstone_torch"
+          "item": "minecraft:redstone_torch",
+          "nbt": {
+            "hello": "world"
+          }
         },
         {
           "item": "minecraft:repeater"

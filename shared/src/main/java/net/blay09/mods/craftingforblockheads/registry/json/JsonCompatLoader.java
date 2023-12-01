@@ -3,17 +3,26 @@ package net.blay09.mods.craftingforblockheads.registry.json;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.craftingforblockheads.CraftingForBlockheadsConfig;
 import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsAPI;
 import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsProvider;
+import net.blay09.mods.craftingforblockheads.api.ItemFilter;
 import net.blay09.mods.craftingforblockheads.registry.DataDrivenProviderFactory;
+import net.blay09.mods.craftingforblockheads.registry.IngredientItemFilter;
+import net.blay09.mods.craftingforblockheads.registry.NbtIngredientItemFilter;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,17 +113,27 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
         return provider;
     }
 
-    public static NonNullList<Ingredient> itemsFromJson(JsonArray jsonArray) {
-        NonNullList<Ingredient> ingredients = NonNullList.create();
+    public static NonNullList<ItemFilter> itemsFromJson(JsonArray jsonArray) {
+        NonNullList<ItemFilter> itemFilters = NonNullList.create();
 
         for (int i = 0; i < jsonArray.size(); i++) {
-            Ingredient ingredient = Ingredient.fromJson(jsonArray.get(i), false);
-            if (!ingredient.isEmpty()) {
-                ingredients.add(ingredient);
+            final var jsonObject = jsonArray.get(i).getAsJsonObject();
+            final var ingredient = Ingredient.fromJson(jsonObject, false);
+            if (ingredient.isEmpty()) {
+                continue;
+            }
+
+            final var nbtJson = GsonHelper.getAsJsonObject(jsonObject, "nbt", null);
+            if (nbtJson != null) {
+                final var nbt = readNbt(nbtJson);
+                final var strict = GsonHelper.getAsBoolean(jsonObject, "strict", false);
+                itemFilters.add(new NbtIngredientItemFilter(ingredient, nbt, strict));
+            } else {
+                itemFilters.add(new IngredientItemFilter(ingredient));
             }
         }
 
-        return ingredients;
+        return itemFilters;
     }
 
     public static Set<String> stringSetFromJson(JsonArray jsonArray) {
@@ -125,5 +144,17 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
         }
 
         return strings;
+    }
+
+    private static CompoundTag readNbt(JsonElement json) {
+        try {
+            if (json.isJsonObject()) {
+                return TagParser.parseTag(json.toString());
+            } else {
+                return TagParser.parseTag(GsonHelper.convertToString(json, "nbt"));
+            }
+        } catch (CommandSyntaxException commandSyntaxException) {
+            throw new JsonSyntaxException("Invalid nbt tag: " + commandSyntaxException.getMessage());
+        }
     }
 }

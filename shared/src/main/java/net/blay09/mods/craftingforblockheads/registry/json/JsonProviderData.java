@@ -3,14 +3,13 @@ package net.blay09.mods.craftingforblockheads.registry.json;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.craftingforblockheads.api.ItemFilter;
 import net.blay09.mods.craftingforblockheads.api.WorkshopGroup;
 import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
 import net.blay09.mods.craftingforblockheads.registry.CraftingForBlockheadsRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +18,7 @@ import java.util.Map;
 
 import static net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader.itemsFromJson;
 
-public record JsonProviderData(String modId, String preset, List<Ingredient> craftables, List<WorkshopGroup> groups, Map<String, WorkshopPredicate> predicates,
+public record JsonProviderData(String modId, String preset, List<ItemFilter> craftables, List<WorkshopGroup> groups, Map<String, WorkshopPredicate> predicates,
                                List<JsonProviderFilterData> filters) {
 
     public static JsonProviderData fromJson(JsonObject jsonObject) {
@@ -87,7 +86,7 @@ public record JsonProviderData(String modId, String preset, List<Ingredient> cra
 
         for (final var parentItemId : jsonObject.keySet()) {
             final var jsonArray = jsonObject.get(parentItemId).getAsJsonArray();
-            final var ingredients = itemsFromJson(jsonArray);
+            final var children = itemsFromJson(jsonArray);
             final var parentItem = Balm.getRegistries().getItem(new ResourceLocation(parentItemId));
             if (parentItem == null) {
                 throw new IllegalArgumentException("Unknown item: " + parentItemId);
@@ -100,8 +99,8 @@ public record JsonProviderData(String modId, String preset, List<Ingredient> cra
                 }
 
                 @Override
-                public List<Ingredient> getChildren() {
-                    return ingredients;
+                public List<ItemFilter> getChildren() {
+                    return children;
                 }
             });
         }

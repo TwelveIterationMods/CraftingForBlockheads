@@ -44,8 +44,8 @@ public class CraftingForBlockheadsRegistry {
         providers.remove(provider);
     }
 
-    public static List<Ingredient> getCraftables() {
-        final var craftables = new ArrayList<Ingredient>();
+    public static List<ItemFilter> getCraftables() {
+        final var craftables = new ArrayList<ItemFilter>();
         for (final var provider : providers) {
             craftables.addAll(provider.getCraftables());
         }

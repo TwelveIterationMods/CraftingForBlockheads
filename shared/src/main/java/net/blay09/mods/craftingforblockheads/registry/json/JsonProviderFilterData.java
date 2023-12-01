@@ -2,10 +2,10 @@ package net.blay09.mods.craftingforblockheads.registry.json;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.blay09.mods.craftingforblockheads.api.ItemFilter;
 import net.minecraft.core.NonNullList;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import java.util.Set;
@@ -13,8 +13,8 @@ import java.util.Set;
 import static net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader.itemsFromJson;
 import static net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader.stringSetFromJson;
 
-public record JsonProviderFilterData(String identifier, String name, ItemStack icon, NonNullList<Ingredient> includes,
-                                     NonNullList<Ingredient> excludes, Set<String> hardRequirements, Set<String> softRequirements, int priority) {
+public record JsonProviderFilterData(String identifier, String name, ItemStack icon, NonNullList<ItemFilter> includes,
+                                     NonNullList<ItemFilter> excludes, Set<String> hardRequirements, Set<String> softRequirements, int priority) {
 
     public static JsonProviderFilterData fromJson(String identifier, JsonObject jsonObject) {
         final var name = GsonHelper.getAsString(jsonObject, "name");
