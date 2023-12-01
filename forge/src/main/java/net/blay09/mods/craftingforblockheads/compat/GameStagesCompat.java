@@ -7,7 +7,7 @@ import net.minecraft.util.GsonHelper;
 public class GameStagesCompat {
     public GameStagesCompat() {
         CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("has_gamestage", (jsonObject -> {
-            String gameStage = GsonHelper.getAsString(jsonObject, "stage");
+            String gameStage = GsonHelper.getAsString(jsonObject, "gamestage");
             return (workshop, player) -> player != null && GameStageHelper.hasStage(player, gameStage);
         }));
     }
