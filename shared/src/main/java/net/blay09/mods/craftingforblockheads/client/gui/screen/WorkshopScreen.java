@@ -22,10 +22,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
 
@@ -53,6 +50,7 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
     private EditBox searchBar;
 
     private final List<FilterButton> filterButtons = new ArrayList<>();
+    private Map<String, WorkshopFilterWithStatus> lastAvailableFilters;
 
     private final String[] noCraftables;
     private final String[] noSelection;
@@ -82,10 +80,16 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
         searchBar = new EditBox(minecraft.font, leftPos + 8, topPos - 5, 70, 10, searchBar, Component.empty());
         setInitialFocus(searchBar);
 
+        refreshFilterButtons();
+
+        recalculateScrollBar();
+    }
+
+    private void refreshFilterButtons() {
         int yOffset = -80;
 
         filterButtons.clear();
-        final var availableFilters = menu.getWorkshop().getAvailableFilters(minecraft.player)
+        final var availableFilters = menu.getAvailableFilters()
                 .values()
                 .stream()
                 .sorted(Comparator.comparingInt(WorkshopFilterWithStatus::priority).reversed()).toList();
@@ -96,10 +100,7 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
 
             yOffset += 20;
         }
-
-        recalculateScrollBar();
     }
-
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
@@ -208,6 +209,11 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
             menu.setDirty(false);
         }
 
+        if (lastAvailableFilters != menu.getAvailableFilters()) {
+            refreshFilterButtons();
+            lastAvailableFilters = menu.getAvailableFilters();
+        }
+
         guiGraphics.setColor(1f, 1f, 1f, 1f);
         guiGraphics.blit(guiTexture, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10);
 
@@ -311,9 +317,9 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
             matrixSlot.updateSlot(partialTicks);
         }
 
-        for (FilterButton sortButton : this.filterButtons) {
-            if (sortButton.isMouseOver(mouseX, mouseY) && sortButton.active) {
-                guiGraphics.renderTooltip(font, sortButton.getTooltipLines(), Optional.empty(), mouseX, mouseY);
+        for (FilterButton filterButton : this.filterButtons) {
+            if (filterButton.isMouseOver(mouseX, mouseY) && filterButton.active) {
+                guiGraphics.renderTooltip(font, filterButton.getTooltipLines(), Optional.empty(), mouseX, mouseY);
             }
         }
 

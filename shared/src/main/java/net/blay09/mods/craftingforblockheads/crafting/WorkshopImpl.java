@@ -120,8 +120,7 @@ public class WorkshopImpl implements Workshop {
     }
 
     @Override
-    public Map<String, WorkshopFilterWithStatus> getAvailableFilters(@Nullable Player player) {
-        final var fulfilledPredicates = getFulfilledPredicates(player);
+    public Map<String, WorkshopFilterWithStatus> getAvailableFilters(Set<String> fulfilledPredicates) {
         final var result = new HashMap<String, WorkshopFilterWithStatus>();
         for (Map.Entry<String, WorkshopFilter> entry : CraftingForBlockheadsRegistry.getWorkshopFilters().entrySet()) {
             if (fulfilledPredicates.containsAll(entry.getValue().getHardRequirements())) {

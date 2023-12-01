@@ -49,7 +49,10 @@ public class WorkshopMenu extends AbstractContainerMenu {
     private Comparator<RecipeWithStatus> currentSorting = new CraftableComparator();
 
     private List<RecipeWithStatus> craftables = new ArrayList<>();
+    private Set<String> fulfilledPredicates = new HashSet<>();
+    private Map<String, WorkshopFilterWithStatus> availableFilters = new HashMap<>();
 
+    private boolean filtersDirty = true;
     private boolean craftablesDirty = true;
     private boolean recipesDirty = true;
     private boolean isDirtyClient;
@@ -64,7 +67,8 @@ public class WorkshopMenu extends AbstractContainerMenu {
         this.player = player;
         this.workshop = workshop;
 
-        currentFilter = workshop.getAvailableFilters(player).values()
+        final var fulfilledPredicates = workshop.getFulfilledPredicates(player);
+        currentFilter = workshop.getAvailableFilters(fulfilledPredicates).values()
                 .stream()
                 .filter(WorkshopFilterWithStatus::available)
                 .map(WorkshopFilterWithStatus::filter)
@@ -96,6 +100,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
                     public void setChanged() {
                         craftablesDirty = true;
                         recipesDirty = true;
+                        filtersDirty = true;
                     }
                 });
             }
@@ -107,6 +112,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
                 public void setChanged() {
                     craftablesDirty = true;
                     recipesDirty = true;
+                    filtersDirty = true;
                 }
             });
         }
@@ -141,6 +147,11 @@ public class WorkshopMenu extends AbstractContainerMenu {
     @Override
     public void broadcastChanges() {
         super.broadcastChanges();
+        if (filtersDirty) {
+            broadcastFulfilledPredicates();
+            filtersDirty = false;
+        }
+
         if (craftablesDirty) {
             broadcastCraftables(currentFilter != null ? currentFilter.getId() : null);
             craftablesDirty = false;
@@ -217,7 +228,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
     }
 
     public void handleRequestCraftables(String filterId) {
-        final var filter = workshop.getAvailableFilters(player).get(filterId);
+        final var filter = availableFilters.get(filterId);
         if (filter != null) {
             setCurrentFilter(filter.filter());
         }
@@ -327,7 +338,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
     }
 
     public void broadcastCraftables(@Nullable String filterId) {
-        final var filter = workshop.getAvailableFilters(player).get(filterId);
+        final var filter = availableFilters.get(filterId);
         craftables = getAvailableCraftables(filter);
         Balm.getNetworking().sendTo(player, new CraftablesListMessage(craftables));
     }
@@ -677,5 +688,21 @@ public class WorkshopMenu extends AbstractContainerMenu {
         if (selectedCraftable != null) {
             requestRecipes(selectedCraftable);
         }
+    }
+
+    public void broadcastFulfilledPredicates() {
+        fulfilledPredicates = workshop.getFulfilledPredicates(player);
+        availableFilters = workshop.getAvailableFilters(fulfilledPredicates);
+
+        Balm.getNetworking().sendTo(player, new FulfilledPredicateListMessage(fulfilledPredicates));
+    }
+
+    public void setFulfilledPredicates(Set<String> fulfilledPredicates) {
+        this.fulfilledPredicates = fulfilledPredicates;
+        this.availableFilters = workshop.getAvailableFilters(fulfilledPredicates);
+    }
+
+    public Map<String, WorkshopFilterWithStatus> getAvailableFilters() {
+        return availableFilters;
     }
 }

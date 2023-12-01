@@ -8,10 +8,8 @@ import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
 import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsAPI;
-import net.blay09.mods.craftingforblockheads.api.IngredientToken;
 import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
 import net.blay09.mods.craftingforblockheads.block.ModBlocks;
-import net.blay09.mods.craftingforblockheads.crafting.CraftingContext;
 import net.blay09.mods.craftingforblockheads.crafting.WorkshopImpl;
 import net.blay09.mods.craftingforblockheads.menu.ModMenus;
 import net.blay09.mods.craftingforblockheads.item.ModItems;
@@ -22,6 +20,7 @@ import net.blay09.mods.craftingforblockheads.registry.CraftingForBlockheadsRegis
 import net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader;
 import net.blay09.mods.craftingforblockheads.tag.ModBlockTags;
 import net.blay09.mods.craftingforblockheads.tag.ModItemTags;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -105,6 +104,27 @@ public class CraftingForBlockheads {
                     if (ingredientToken != null) {
                         return true;
                     }
+                }
+                return false;
+            };
+        });
+
+        CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("has_advancement", jsonObject -> {
+            final var advancementId = new ResourceLocation(GsonHelper.getAsString(jsonObject, "advancement"));
+            return (workshop, player) -> {
+                if (player instanceof ServerPlayer serverPlayer) {
+                    final var server = player.getServer();
+                    if (server == null) {
+                        return false;
+                    }
+
+                    final var advancements = server.getAdvancements();
+                    final var advancement = advancements.getAdvancement(advancementId);
+                    if (advancement == null) {
+                        return false;
+                    }
+
+                    return serverPlayer.getAdvancements().getOrStartProgress(advancement).isDone();
                 }
                 return false;
             };

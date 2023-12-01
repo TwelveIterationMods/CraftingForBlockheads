@@ -26,5 +26,5 @@ public interface Workshop {
 
     Set<String> getFulfilledPredicates(@Nullable Player player);
 
-    Map<String, WorkshopFilterWithStatus> getAvailableFilters(@Nullable Player player);
+    Map<String, WorkshopFilterWithStatus> getAvailableFilters(Set<String> fulfilledPredicates);
 }

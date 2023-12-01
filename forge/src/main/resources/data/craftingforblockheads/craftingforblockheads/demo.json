@@ -22,6 +22,12 @@
           }
         ]
       }
+    ],
+    "unlocked_iron_tools": [
+      {
+        "type": "has_advancement",
+        "advancement": "minecraft:story/iron_tools"
+      }
     ]
   },
   "groups": {
@@ -100,7 +106,8 @@
           "tag": "minecraft:buttons"
         }
       ],
-      "hard_requirements": ["workbench_used"]
+      "hard_requirements": ["workbench_used"],
+      "soft_requirements": ["unlocked_iron_tools"]
     }
   }
 }
