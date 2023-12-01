@@ -48,24 +48,9 @@ public record JsonProviderData(String modId, String preset, List<ItemFilter> cra
         final var predicates = new HashMap<String, WorkshopPredicate>();
 
         for (final var identifier : jsonObject.keySet()) {
-            final var predicateJson = jsonObject.get(identifier);
-            if (predicateJson.isJsonArray()) {
-                final var predicateJsonArray = predicateJson.getAsJsonArray();
-                WorkshopPredicate combinedPredicate = null;
-                for (int i = 0; i < predicateJsonArray.size(); i++) {
-                    final var predicate = predicateFromJson(predicateJsonArray.get(i).getAsJsonObject());
-                    if (combinedPredicate == null) {
-                        combinedPredicate = predicate;
-                    } else {
-                        combinedPredicate = combinedPredicate.and(predicate);
-                    }
-                }
-                predicates.put(identifier, combinedPredicate);
-            } else if (predicateJson.isJsonObject()) {
-                final var predicateJsonObject = predicateJson.getAsJsonObject();
-                final var predicate = predicateFromJson(predicateJsonObject);
-                predicates.put(identifier, predicate);
-            }
+            final var predicateJson = GsonHelper.getAsJsonObject(jsonObject, identifier);
+            final var predicate = predicateFromJson(predicateJson);
+            predicates.put(identifier, predicate);
         }
 
         return predicates;

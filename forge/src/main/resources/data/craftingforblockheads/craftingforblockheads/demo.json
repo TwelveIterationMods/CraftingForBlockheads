@@ -2,33 +2,27 @@
   "modid": "craftingforblockheads",
   "preset": "demo",
   "predicates": {
-    "workbench_used": [
-      {
-        "type": "workshop_core",
-        "block": "craftingforblockheads:workbench"
-      }
-    ],
-    "metalworking": [
-      {
-        "type": "any_of",
-        "conditions": [
-          {
-            "type": "workshop_has",
-            "block": "minecraft:anvil"
-          },
-          {
-            "type": "workshop_has",
-            "tag": "minecraft:cauldrons"
-          }
-        ]
-      }
-    ],
-    "unlocked_iron_tools": [
-      {
-        "type": "has_advancement",
-        "advancement": "minecraft:story/iron_tools"
-      }
-    ]
+    "workbench_used": {
+      "type": "workshop_core",
+      "block": "craftingforblockheads:workbench"
+    },
+    "metalworking": {
+      "type": "any_of",
+      "conditions": [
+        {
+          "type": "workshop_has",
+          "block": "minecraft:anvil"
+        },
+        {
+          "type": "workshop_has",
+          "tag": "minecraft:cauldrons"
+        }
+      ]
+    },
+    "unlocked_iron_tools": {
+      "type": "has_advancement",
+      "advancement": "minecraft:story/iron_tools"
+    }
   },
   "groups": {
     "minecraft:oak_button": [
