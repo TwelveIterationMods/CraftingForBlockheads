@@ -30,7 +30,7 @@ public class WorkshopImpl implements Workshop {
     private final ItemStack activatingItemStack;
     private final BlockState activatingBlockState;
     private final Set<BlockPos> checkedPos = new HashSet<>();
-    private final List<IWorkshopItemProvider> itemProviderList = new ArrayList<>();
+    private final List<WorkshopItemProvider> itemProviderList = new ArrayList<>();
     private final Set<Block> providedBlocks = new HashSet<>();
     private final Set<TagKey<Block>> providedBlockTags = new HashSet<>();
 
@@ -58,7 +58,7 @@ public class WorkshopImpl implements Workshop {
                     BlockState state = level.getBlockState(position);
                     BlockEntity blockEntity = level.getBlockEntity(position);
                     if (blockEntity != null) {
-                        IWorkshopItemProvider itemProvider = ProviderUtils.getProvider(blockEntity, IWorkshopItemProvider.class);
+                        WorkshopItemProvider itemProvider = ProviderUtils.getProvider(blockEntity, WorkshopItemProvider.class);
                         if (itemProvider != null) {
                             itemProviderList.add(itemProvider);
 
@@ -99,8 +99,8 @@ public class WorkshopImpl implements Workshop {
     }
 
     @Override
-    public List<IWorkshopItemProvider> getItemProviders(@Nullable Player player) {
-        List<IWorkshopItemProvider> sourceInventories = Lists.newArrayList();
+    public List<WorkshopItemProvider> getItemProviders(@Nullable Player player) {
+        List<WorkshopItemProvider> sourceInventories = Lists.newArrayList();
         sourceInventories.addAll(itemProviderList);
         if (player != null) {
             sourceInventories.add(new ContainerWorkshopItemProvider(player.getInventory()));

@@ -1,6 +1,6 @@
 package net.blay09.mods.craftingforblockheads.api;
 
-import net.blay09.mods.craftingforblockheads.api.capability.IWorkshopItemProvider;
+import net.blay09.mods.craftingforblockheads.api.capability.WorkshopItemProvider;
 import net.blay09.mods.craftingforblockheads.menu.WorkshopFilterWithStatus;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +22,7 @@ public interface Workshop {
 
     Set<TagKey<Block>> getProvidedBlockTags();
 
-    List<IWorkshopItemProvider> getItemProviders(@Nullable Player player);
+    List<WorkshopItemProvider> getItemProviders(@Nullable Player player);
 
     Set<String> getFulfilledPredicates(@Nullable Player player);
 

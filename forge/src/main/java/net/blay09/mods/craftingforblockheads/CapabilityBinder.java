@@ -34,7 +34,7 @@ public class CapabilityBinder {
 
     private final static class KitchenItemCapabilityProvider implements ICapabilityProvider {
 
-        private final LazyOptional<IWorkshopItemProvider> itemProviderCap;
+        private final LazyOptional<WorkshopItemProvider> itemProviderCap;
 
         public KitchenItemCapabilityProvider(final BlockEntity entity) {
             itemProviderCap = LazyOptional.of(() -> {

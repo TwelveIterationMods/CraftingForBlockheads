@@ -1,4 +1,4 @@
-package net.blay09.mods.craftingforblockheads.crafting;
+package net.blay09.mods.craftingforblockheads.api;
 
 import net.minecraft.world.item.ItemStack;
 

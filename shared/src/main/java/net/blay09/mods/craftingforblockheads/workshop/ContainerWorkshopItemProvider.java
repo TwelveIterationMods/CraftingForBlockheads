@@ -1,15 +1,15 @@
 package net.blay09.mods.craftingforblockheads.workshop;
 
 import net.blay09.mods.balm.api.container.ContainerUtils;
-import net.blay09.mods.craftingforblockheads.api.capability.IWorkshopItemProvider;
-import net.blay09.mods.craftingforblockheads.crafting.IngredientToken;
+import net.blay09.mods.craftingforblockheads.api.capability.WorkshopItemProvider;
+import net.blay09.mods.craftingforblockheads.api.IngredientToken;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Collection;
 
-public class ContainerWorkshopItemProvider implements IWorkshopItemProvider {
+public class ContainerWorkshopItemProvider implements WorkshopItemProvider {
 
     private final Container container;
 

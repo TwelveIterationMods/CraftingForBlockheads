@@ -2,12 +2,10 @@ package net.blay09.mods.craftingforblockheads.api;
 
 import com.google.gson.JsonObject;
 import net.blay09.mods.craftingforblockheads.InternalMethodsImpl;
-import net.blay09.mods.craftingforblockheads.ShapedRecipeWorkshopHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
 import java.lang.reflect.InvocationTargetException;

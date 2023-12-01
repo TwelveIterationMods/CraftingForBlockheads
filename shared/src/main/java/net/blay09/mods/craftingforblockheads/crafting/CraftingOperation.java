@@ -3,6 +3,7 @@ package net.blay09.mods.craftingforblockheads.crafting;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.IntList;
+import net.blay09.mods.craftingforblockheads.api.IngredientToken;
 import net.blay09.mods.craftingforblockheads.registry.CraftingForBlockheadsRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;

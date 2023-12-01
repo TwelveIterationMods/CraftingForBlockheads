@@ -1,7 +1,7 @@
 package net.blay09.mods.craftingforblockheads;
 
-import net.blay09.mods.craftingforblockheads.api.capability.IWorkshopItemProvider;
-import net.blay09.mods.craftingforblockheads.crafting.IngredientToken;
+import net.blay09.mods.craftingforblockheads.api.capability.WorkshopItemProvider;
+import net.blay09.mods.craftingforblockheads.api.IngredientToken;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.items.IItemHandler;
@@ -9,7 +9,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.Collection;
 
-public class ItemHandlerWorkshopItemProvider implements IWorkshopItemProvider {
+public class ItemHandlerWorkshopItemProvider implements WorkshopItemProvider {
     private final IItemHandler itemHandler;
 
     public ItemHandlerWorkshopItemProvider(IItemHandler itemHandler) {
