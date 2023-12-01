@@ -8,8 +8,10 @@ import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
 import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsAPI;
+import net.blay09.mods.craftingforblockheads.api.IngredientToken;
 import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
 import net.blay09.mods.craftingforblockheads.block.ModBlocks;
+import net.blay09.mods.craftingforblockheads.crafting.CraftingContext;
 import net.blay09.mods.craftingforblockheads.crafting.WorkshopImpl;
 import net.blay09.mods.craftingforblockheads.menu.ModMenus;
 import net.blay09.mods.craftingforblockheads.item.ModItems;
@@ -31,11 +33,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Collections;
 
 import static net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader.predicateFromJson;
 
@@ -89,6 +94,20 @@ public class CraftingForBlockheads {
             }
 
             throw new IllegalArgumentException("workshop_has predicate requires either block or tag");
+        });
+
+        CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("workshop_contains", jsonObject -> {
+            final var ingredient = Ingredient.fromJson(jsonObject, false);
+            return (workshop, player) -> {
+                final var itemProviders = workshop.getItemProviders(player);
+                for (final var itemProvider : itemProviders) {
+                    final var ingredientToken = itemProvider.findIngredient(ingredient, Collections.emptyList());
+                    if (ingredientToken != null) {
+                        return true;
+                    }
+                }
+                return false;
+            };
         });
 
         CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("all_of", jsonObject -> {
