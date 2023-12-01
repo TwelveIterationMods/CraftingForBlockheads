@@ -13,4 +13,8 @@ public interface WorkshopPredicate {
     default WorkshopPredicate or(WorkshopPredicate other) {
         return (workshop, player) -> isSatisfied(workshop, player) || other.isSatisfied(workshop, player);
     }
+
+    default WorkshopPredicate negate() {
+        return (workshop, player) -> !isSatisfied(workshop, player);
+    }
 }

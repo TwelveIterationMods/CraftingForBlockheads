@@ -10,7 +10,7 @@
     ],
     "metalworking": [
       {
-        "type": "anyOf",
+        "type": "any_of",
         "conditions": [
           {
             "type": "workshop_has",

@@ -91,8 +91,12 @@ public class CraftingForBlockheads {
             throw new IllegalArgumentException("workshop_has predicate requires either block or tag");
         });
 
-        CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("allOf", jsonObject -> {
+        CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("all_of", jsonObject -> {
             final var conditions = GsonHelper.getAsJsonArray(jsonObject, "conditions");
+            if (conditions.isEmpty()) {
+                throw new IllegalArgumentException("all_of predicate requires at least one condition");
+            }
+
             WorkshopPredicate combinedPredicate = null;
             for (JsonElement condition : conditions) {
                 final var predicate = predicateFromJson(condition.getAsJsonObject());
@@ -105,8 +109,12 @@ public class CraftingForBlockheads {
             return combinedPredicate;
         });
 
-        CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("anyOf", jsonObject -> {
+        CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("any_of", jsonObject -> {
             final var conditions = GsonHelper.getAsJsonArray(jsonObject, "conditions");
+            if (conditions.isEmpty()) {
+                throw new IllegalArgumentException("any_of predicate requires at least one condition");
+            }
+
             WorkshopPredicate combinedPredicate = null;
             for (JsonElement condition : conditions) {
                 final var predicate = predicateFromJson(condition.getAsJsonObject());
@@ -118,6 +126,39 @@ public class CraftingForBlockheads {
             }
             return combinedPredicate;
         });
+
+        CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("none_of", jsonObject -> {
+            final var conditions = GsonHelper.getAsJsonArray(jsonObject, "conditions");
+            if (conditions.isEmpty()) {
+                throw new IllegalArgumentException("none_of predicate requires at least one condition");
+            }
+
+            WorkshopPredicate combinedPredicate = null;
+            for (JsonElement condition : conditions) {
+                final var predicate = predicateFromJson(condition.getAsJsonObject());
+                if (combinedPredicate == null) {
+                    combinedPredicate = predicate;
+                } else {
+                    combinedPredicate = combinedPredicate.and(predicate);
+                }
+            }
+            return combinedPredicate != null ? combinedPredicate.negate() : (workshop, player) -> true;
+        });
+
+        CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("not", jsonObject -> {
+            final var condition = GsonHelper.getAsJsonObject(jsonObject, "condition");
+            final var predicate = predicateFromJson(condition);
+            return predicate.negate();
+        });
+
+        CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("meets_predicate", jsonObject -> {
+            final var predicateId = GsonHelper.getAsString(jsonObject, "predicate");
+            return (workshop, player) -> {
+                final var predicate = CraftingForBlockheadsRegistry.getWorkshopPredicates().get(predicateId);
+                return predicate.isSatisfied(workshop, player);
+            };
+        });
+
 
         Balm.addServerReloadListener(new ResourceLocation(MOD_ID, "json_registry"), new JsonCompatLoader());
 
