@@ -9,4 +9,8 @@ public interface WorkshopPredicate {
     default WorkshopPredicate and(WorkshopPredicate other) {
         return (workshop, player) -> isSatisfied(workshop, player) && other.isSatisfied(workshop, player);
     }
+
+    default WorkshopPredicate or(WorkshopPredicate other) {
+        return (workshop, player) -> isSatisfied(workshop, player) || other.isSatisfied(workshop, player);
+    }
 }

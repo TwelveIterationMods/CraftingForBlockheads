@@ -1,5 +1,6 @@
 package net.blay09.mods.craftingforblockheads;
 
+import com.google.gson.JsonElement;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.UseBlockEvent;
 import net.blay09.mods.balm.api.event.UseItemEvent;
@@ -7,6 +8,7 @@ import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
 import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsAPI;
+import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
 import net.blay09.mods.craftingforblockheads.block.ModBlocks;
 import net.blay09.mods.craftingforblockheads.crafting.WorkshopImpl;
 import net.blay09.mods.craftingforblockheads.menu.ModMenus;
@@ -34,6 +36,8 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import static net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader.predicateFromJson;
 
 public class CraftingForBlockheads {
 
@@ -85,6 +89,34 @@ public class CraftingForBlockheads {
             }
 
             throw new IllegalArgumentException("workshop_has predicate requires either block or tag");
+        });
+
+        CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("allOf", jsonObject -> {
+            final var conditions = GsonHelper.getAsJsonArray(jsonObject, "conditions");
+            WorkshopPredicate combinedPredicate = null;
+            for (JsonElement condition : conditions) {
+                final var predicate = predicateFromJson(condition.getAsJsonObject());
+                if (combinedPredicate == null) {
+                    combinedPredicate = predicate;
+                } else {
+                    combinedPredicate = combinedPredicate.and(predicate);
+                }
+            }
+            return combinedPredicate;
+        });
+
+        CraftingForBlockheadsAPI.registerWorkshopPredicateDeserializer("anyOf", jsonObject -> {
+            final var conditions = GsonHelper.getAsJsonArray(jsonObject, "conditions");
+            WorkshopPredicate combinedPredicate = null;
+            for (JsonElement condition : conditions) {
+                final var predicate = predicateFromJson(condition.getAsJsonObject());
+                if (combinedPredicate == null) {
+                    combinedPredicate = predicate;
+                } else {
+                    combinedPredicate = combinedPredicate.or(predicate);
+                }
+            }
+            return combinedPredicate;
         });
 
         Balm.addServerReloadListener(new ResourceLocation(MOD_ID, "json_registry"), new JsonCompatLoader());

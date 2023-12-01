@@ -6,7 +6,6 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.craftingforblockheads.api.ItemFilter;
 import net.blay09.mods.craftingforblockheads.api.WorkshopGroup;
 import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
-import net.blay09.mods.craftingforblockheads.registry.CraftingForBlockheadsRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader.itemsFromJson;
+import static net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader.predicateFromJson;
 
 public record JsonProviderData(String modId, String preset, List<ItemFilter> craftables, List<WorkshopGroup> groups, Map<String, WorkshopPredicate> predicates,
                                List<JsonProviderFilterData> filters) {
@@ -69,16 +69,6 @@ public record JsonProviderData(String modId, String preset, List<ItemFilter> cra
         }
 
         return predicates;
-    }
-
-    private static WorkshopPredicate predicateFromJson(JsonObject jsonObject) {
-        final var predicateType = GsonHelper.getAsString(jsonObject, "type");
-        final var deserializer = CraftingForBlockheadsRegistry.getWorkshopPredicateDeserializer(predicateType);
-        if (deserializer != null) {
-            return deserializer.apply(jsonObject);
-        } else {
-            throw new IllegalArgumentException("Unknown workshop predicate type: " + predicateType);
-        }
     }
 
     private static List<WorkshopGroup> groupsFromJson(JsonObject jsonObject) {

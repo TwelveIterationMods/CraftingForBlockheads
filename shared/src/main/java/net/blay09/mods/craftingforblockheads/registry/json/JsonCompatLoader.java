@@ -1,15 +1,14 @@
 package net.blay09.mods.craftingforblockheads.registry.json;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.craftingforblockheads.CraftingForBlockheadsConfig;
 import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsAPI;
 import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsProvider;
 import net.blay09.mods.craftingforblockheads.api.ItemFilter;
+import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
+import net.blay09.mods.craftingforblockheads.registry.CraftingForBlockheadsRegistry;
 import net.blay09.mods.craftingforblockheads.registry.DataDrivenProviderFactory;
 import net.blay09.mods.craftingforblockheads.registry.IngredientItemFilter;
 import net.blay09.mods.craftingforblockheads.registry.NbtIngredientItemFilter;
@@ -155,6 +154,16 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
             }
         } catch (CommandSyntaxException commandSyntaxException) {
             throw new JsonSyntaxException("Invalid nbt tag: " + commandSyntaxException.getMessage());
+        }
+    }
+
+    public static WorkshopPredicate predicateFromJson(JsonObject jsonObject) {
+        final var predicateType = GsonHelper.getAsString(jsonObject, "type");
+        final var deserializer = CraftingForBlockheadsRegistry.getWorkshopPredicateDeserializer(predicateType);
+        if (deserializer != null) {
+            return deserializer.apply(jsonObject);
+        } else {
+            throw new IllegalArgumentException("Unknown workshop predicate type: " + predicateType);
         }
     }
 }

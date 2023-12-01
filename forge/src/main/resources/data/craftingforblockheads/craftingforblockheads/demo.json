@@ -10,8 +10,17 @@
     ],
     "metalworking": [
       {
-        "type": "workshop_has",
-        "block": "minecraft:anvil"
+        "type": "anyOf",
+        "conditions": [
+          {
+            "type": "workshop_has",
+            "block": "minecraft:anvil"
+          },
+          {
+            "type": "workshop_has",
+            "tag": "minecraft:cauldrons"
+          }
+        ]
       }
     ]
   },
