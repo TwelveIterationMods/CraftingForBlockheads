@@ -20,7 +20,6 @@ import net.blay09.mods.craftingforblockheads.registry.CraftingForBlockheadsRegis
 import net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader;
 import net.blay09.mods.craftingforblockheads.tag.ModBlockTags;
 import net.blay09.mods.craftingforblockheads.tag.ModItemTags;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -216,7 +215,7 @@ public class CraftingForBlockheads {
             final var level = player.level();
             final var pos = event.getHitResult().getBlockPos();
             final var state = level.getBlockState(pos);
-            if (state.is(ModBlockTags.WORKSHOP_CORE)) {
+            if (state.is(ModBlockTags.IS_WORKSHOP_CORE)) {
                 Balm.getNetworking().openGui(player, new BalmMenuProvider() {
                     @Override
                     public Component getDisplayName() {
@@ -241,7 +240,7 @@ public class CraftingForBlockheads {
         Balm.getEvents().onEvent(UseItemEvent.class, event -> {
             final var player = event.getPlayer();
             final var itemStack = player.getItemInHand(event.getHand());
-            if (itemStack.is(ModItemTags.WORKSHOP_CORE)) {
+            if (itemStack.is(ModItemTags.IS_WORKSHOP_CORE)) {
                 Balm.getNetworking().openGui(player, new BalmMenuProvider() {
                     @Override
                     public Component getDisplayName() {

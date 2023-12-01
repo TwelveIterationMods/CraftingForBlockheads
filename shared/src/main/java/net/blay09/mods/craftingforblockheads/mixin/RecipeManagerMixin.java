@@ -24,7 +24,7 @@ public class RecipeManagerMixin {
         if (result.isPresent()) {
             final var recipe = result.get();
             final var resultItem = recipe.getResultItem(level.registryAccess());
-            if (resultItem.is(ModItemTags.WORKSHOP_EXCLUSIVE)) {
+            if (resultItem.is(ModItemTags.IS_WORKSHOP_EXCLUSIVE)) {
                 callbackInfo.setReturnValue(Optional.empty());
             }
         }
@@ -36,7 +36,7 @@ public class RecipeManagerMixin {
         if (result.isPresent()) {
             final var recipe = result.get();
             final var resultItem = recipe.getResultItem(level.registryAccess());
-            if (resultItem.is(ModItemTags.WORKSHOP_EXCLUSIVE)) {
+            if (resultItem.is(ModItemTags.IS_WORKSHOP_EXCLUSIVE)) {
                 callbackInfo.setReturnValue(Optional.empty());
             }
         }
@@ -48,7 +48,7 @@ public class RecipeManagerMixin {
         Set<Recipe<?>> removedRecipes = null;
         for (Recipe<?> recipe : result) {
             final var resultItem = recipe.getResultItem(level.registryAccess());
-            if (resultItem.is(ModItemTags.WORKSHOP_EXCLUSIVE)) {
+            if (resultItem.is(ModItemTags.IS_WORKSHOP_EXCLUSIVE)) {
                 if (removedRecipes == null) {
                     removedRecipes = new HashSet<>();
                 }

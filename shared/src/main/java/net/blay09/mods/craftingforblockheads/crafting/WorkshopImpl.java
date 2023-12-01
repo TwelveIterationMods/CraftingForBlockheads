@@ -67,7 +67,7 @@ public class WorkshopImpl implements Workshop {
 
                             findNeighbourCraftingBlocks(level, position, true);
                         }
-                    } else if (state.is(ModBlockTags.WORKSHOP_CONNECTORS) || state.is(ModBlockTags.WORKSHOP_CORE)) {
+                    } else if (state.is(ModBlockTags.WORKSHOP_CONNECTORS) || state.is(ModBlockTags.IS_WORKSHOP_CORE)) {
                         providedBlocks.add(state.getBlock());
                         state.getTags().forEach(providedBlockTags::add);
 

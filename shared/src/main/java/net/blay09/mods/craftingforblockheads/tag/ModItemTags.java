@@ -7,6 +7,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
 public class ModItemTags {
-    public static final TagKey<Item> WORKSHOP_CORE = TagKey.create(Registries.ITEM, new ResourceLocation(CraftingForBlockheads.MOD_ID, "workshop_core"));
-    public static final TagKey<Item> WORKSHOP_EXCLUSIVE = TagKey.create(Registries.ITEM, new ResourceLocation(CraftingForBlockheads.MOD_ID, "workshop_exclusive"));
+    public static final TagKey<Item> IS_WORKSHOP_CORE = TagKey.create(Registries.ITEM, new ResourceLocation(CraftingForBlockheads.MOD_ID, "is_workshop_core"));
+    public static final TagKey<Item> IS_WORKSHOP_EXCLUSIVE = TagKey.create(Registries.ITEM, new ResourceLocation(CraftingForBlockheads.MOD_ID, "is_workshop_exclusive"));
 }
