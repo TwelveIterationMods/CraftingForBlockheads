@@ -122,7 +122,7 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
                 continue;
             }
 
-            final var nbtJson = GsonHelper.getAsJsonObject(jsonObject, "nbt", null);
+            final var nbtJson = jsonObject.get("nbt");
             if (nbtJson != null) {
                 final var nbt = readNbt(nbtJson);
                 final var strict = GsonHelper.getAsBoolean(jsonObject, "strict", false);
