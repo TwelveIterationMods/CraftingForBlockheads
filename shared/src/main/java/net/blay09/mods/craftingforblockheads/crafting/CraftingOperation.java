@@ -66,6 +66,7 @@ public class CraftingOperation {
         for (int i = 0; i < ingredients.size(); i++) {
             final var ingredient = ingredients.get(i);
             if (ingredient.isEmpty()) {
+                ingredientTokens.add(IngredientToken.EMPTY);
                 continue;
             }
 
