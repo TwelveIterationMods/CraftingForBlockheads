@@ -380,6 +380,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
                     operation.getLockedInputs()));
         }
 
+        result.sort(currentSorting);
         this.recipesForSelection = result;
         Balm.getNetworking().sendTo(player, new RecipesListMessage(result));
     }
