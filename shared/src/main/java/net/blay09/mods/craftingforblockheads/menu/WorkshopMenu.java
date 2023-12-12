@@ -331,9 +331,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
 
     private Collection<Recipe<?>> getRecipesFor(ItemStack resultItem) {
         final var recipes = new ArrayList<>(CraftingForBlockheadsRegistry.getRecipesFor(resultItem));
-        if (resultItem.getItem() == Items.OAK_BUTTON) {
-            recipes.addAll(CraftingForBlockheadsRegistry.getRecipesInGroup(resultItem));
-        }
+        recipes.addAll(CraftingForBlockheadsRegistry.getRecipesInGroup(resultItem));
         return recipes;
     }
 
