@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "craftingforblockheads:workbench",
+    "craftingforblockheads:carpenters_workbench",
+    "craftingforblockheads:tailors_workbench",
+    "craftingforblockheads:masons_workbench",
+    "craftingforblockheads:armorers_workbench",
+    "craftingforblockheads:fletchers_workbench",
+    "craftingforblockheads:alchemists_workbench",
+    "craftingforblockheads:engineers_workbench",
+    "craftingforblockheads:tinkerers_workbench"
+  ]
+}

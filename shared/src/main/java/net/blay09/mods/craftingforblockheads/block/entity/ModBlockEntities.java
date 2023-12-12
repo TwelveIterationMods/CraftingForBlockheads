@@ -13,7 +13,19 @@ public class ModBlockEntities {
     public static DeferredObject<BlockEntityType<WorkbenchBlockEntity>> workbench;
 
     public static void initialize(BalmBlockEntities blockEntities) {
-        workbench = blockEntities.registerBlockEntity(id("workbench"), WorkbenchBlockEntity::new, () -> new Block[]{ModBlocks.workbench});
+        workbench = blockEntities.registerBlockEntity(id("workbench"),
+                WorkbenchBlockEntity::new,
+                () -> new Block[]{
+                        ModBlocks.workbench,
+                        ModBlocks.carpentersWorkbench,
+                        ModBlocks.tailorsWorkbench,
+                        ModBlocks.masonsWorkbench,
+                        ModBlocks.armorersWorkbench,
+                        ModBlocks.fletchersWorkbench,
+                        ModBlocks.alchemistsWorkbench,
+                        ModBlocks.engineersWorkbench,
+                        ModBlocks.tinkerersWorkbench
+                });
     }
 
     private static ResourceLocation id(String name) {

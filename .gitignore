@@ -21,3 +21,4 @@ build
 eclipse
 run
 logs
+/shared/src/main/generated/.cache

@@ -15,7 +15,7 @@
   },
 
   "license": "All Rights Reserved",
-  "icon": "craftingforblockheads-icon.png",
+  "icon": "craftingforblockheads.png",
 
   "environment": "*",
   "entrypoints": {
@@ -27,6 +27,9 @@
     ],
     "modmenu": [
       "net.blay09.mods.craftingforblockheads.compat.ModMenuIntegration"
+    ],
+    "fabric-datagen": [
+      "net.blay09.mods.craftingforblockheads.datagen.ModDataGenerator"
     ]
   },
   "mixins": [
