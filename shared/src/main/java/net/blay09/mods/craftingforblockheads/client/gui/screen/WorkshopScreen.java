@@ -289,6 +289,7 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
             if (slot instanceof CraftMatrixFakeSlot fakeSlot) {
                 if (fakeSlot.isMissing() && !slot.getItem().isEmpty()) {
                     guiGraphics.fillGradient(leftPos + slot.x, topPos + slot.y, leftPos + slot.x + 16, topPos + slot.y + 16, 0x77FF4444, 0x77FF5555);
+                    guiGraphics.blit(guiTexture, leftPos + slot.x + 1, topPos + slot.y + 1, 208, 60, 16, 16);
                 }
             } else if (slot instanceof CraftableFakeSlot fakeSlot && fakeSlot.getCraftable() != null) {
                 if (menu.isSelectedSlot(fakeSlot)) {
