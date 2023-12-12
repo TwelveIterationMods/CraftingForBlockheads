@@ -348,6 +348,10 @@ public class WorkshopMenu extends AbstractContainerMenu {
         final var recipesForResult = getRecipesFor(resultItem);
         for (Recipe<?> recipe : recipesForResult) {
             final var recipeResultItem = recipe.getResultItem(player.level().registryAccess());
+            if (!filterMatches(recipeResultItem)) {
+                continue;
+            }
+
             final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs).prepare();
             final var itemRequirements = CraftingForBlockheadsRegistry.getItemRequirements(resultItem);
             final var fulfilledPredicates = workshop.getFulfilledPredicates(player);
