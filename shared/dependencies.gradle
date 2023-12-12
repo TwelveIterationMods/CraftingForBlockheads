@@ -4,4 +4,5 @@ repositories {
 dependencies {
     compileOnly "mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version"
     compileOnly "me.shedaniel:RoughlyEnoughItems-api:$rei_version"
+    compileOnly('com.blamejared.crafttweaker:CraftTweaker-common-1.20.1:14.0.27')
 }
