@@ -1,4 +1,4 @@
-package net.blay09.mods.craftingforblockheads.api.capability;
+package net.blay09.mods.craftingforblockheads.api;
 
 import net.blay09.mods.craftingforblockheads.api.IngredientToken;
 import net.minecraft.world.item.ItemStack;

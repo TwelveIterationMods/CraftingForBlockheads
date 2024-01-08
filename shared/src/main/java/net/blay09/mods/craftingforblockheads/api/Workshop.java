@@ -1,6 +1,5 @@
 package net.blay09.mods.craftingforblockheads.api;
 
-import net.blay09.mods.craftingforblockheads.api.capability.WorkshopItemProvider;
 import net.blay09.mods.craftingforblockheads.menu.WorkshopFilterWithStatus;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;

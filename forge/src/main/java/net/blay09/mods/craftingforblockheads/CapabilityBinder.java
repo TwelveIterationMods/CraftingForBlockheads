@@ -1,6 +1,6 @@
 package net.blay09.mods.craftingforblockheads;
 
-import net.blay09.mods.craftingforblockheads.api.capability.*;
+import net.blay09.mods.craftingforblockheads.api.WorkshopItemProvider;
 import net.blay09.mods.craftingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;

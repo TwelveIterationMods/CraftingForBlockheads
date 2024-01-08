@@ -3,7 +3,7 @@ package net.blay09.mods.craftingforblockheads;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.forge.provider.ForgeBalmProviders;
-import net.blay09.mods.craftingforblockheads.api.capability.WorkshopItemProvider;
+import net.blay09.mods.craftingforblockheads.api.WorkshopItemProvider;
 import net.blay09.mods.craftingforblockheads.client.CraftingForBlockheadsClient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.*;

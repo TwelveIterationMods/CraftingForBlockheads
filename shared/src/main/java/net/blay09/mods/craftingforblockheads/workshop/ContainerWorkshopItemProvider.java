@@ -1,7 +1,7 @@
 package net.blay09.mods.craftingforblockheads.workshop;
 
 import net.blay09.mods.balm.api.container.ContainerUtils;
-import net.blay09.mods.craftingforblockheads.api.capability.WorkshopItemProvider;
+import net.blay09.mods.craftingforblockheads.api.WorkshopItemProvider;
 import net.blay09.mods.craftingforblockheads.api.IngredientToken;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;

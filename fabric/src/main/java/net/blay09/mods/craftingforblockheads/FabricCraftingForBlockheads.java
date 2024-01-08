@@ -3,7 +3,7 @@ package net.blay09.mods.craftingforblockheads;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.balm.fabric.provider.FabricBalmProviders;
-import net.blay09.mods.craftingforblockheads.api.capability.WorkshopItemProvider;
+import net.blay09.mods.craftingforblockheads.api.WorkshopItemProvider;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.minecraft.resources.ResourceLocation;
