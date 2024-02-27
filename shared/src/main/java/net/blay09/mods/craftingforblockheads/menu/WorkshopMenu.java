@@ -268,7 +268,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
             for (ResourceLocation itemId : recipesByItemId.keySet()) {
                 for (Recipe<?> recipe : recipesByItemId.get(itemId)) {
                     final var resultItem = recipe.getResultItem(player.level().registryAccess());
-                    if (!filterMatches(resultItem)) {
+                    if (!filterMatches(recipe, resultItem)) {
                         continue;
                     }
 
@@ -348,7 +348,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
         final var recipesForResult = getRecipesFor(resultItem);
         for (Recipe<?> recipe : recipesForResult) {
             final var recipeResultItem = recipe.getResultItem(player.level().registryAccess());
-            if (!filterMatches(recipeResultItem)) {
+            if (!filterMatches(recipe, recipeResultItem)) {
                 continue;
             }
 
@@ -596,14 +596,14 @@ public class WorkshopMenu extends AbstractContainerMenu {
         return false;
     }
 
-    private boolean filterMatches(ItemStack resultItem) {
+    private boolean filterMatches(Recipe<?> recipe, ItemStack resultItem) {
         if (currentFilter == null) {
             return true;
         }
 
-        return currentFilter.getIncludes().stream().anyMatch(it -> it.test(resultItem)) && currentFilter.getExcludes()
+        return currentFilter.getIncludes().stream().anyMatch(it -> it.test(recipe, resultItem)) && currentFilter.getExcludes()
                 .stream()
-                .noneMatch(it -> it.test(resultItem));
+                .noneMatch(it -> it.test(recipe, resultItem));
     }
 
     @Nullable

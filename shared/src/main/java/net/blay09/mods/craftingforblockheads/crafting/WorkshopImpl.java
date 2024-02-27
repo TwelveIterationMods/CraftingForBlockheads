@@ -43,7 +43,7 @@ public class WorkshopImpl implements Workshop {
         activatingBlockState = level.getBlockState(pos);
         activatingItemStack = ItemStack.EMPTY;
         providedBlocks.add(activatingBlockState.getBlock());
-        providedBlockTags.add(activatingBlockState.getTags().iterator().next());
+        activatingBlockState.getTags().forEach(providedBlockTags::add);
         findNeighbourCraftingBlocks(level, pos, true);
     }
 

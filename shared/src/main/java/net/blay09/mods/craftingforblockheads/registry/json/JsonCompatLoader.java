@@ -8,14 +8,12 @@ import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsAPI;
 import net.blay09.mods.craftingforblockheads.api.CraftingForBlockheadsProvider;
 import net.blay09.mods.craftingforblockheads.api.ItemFilter;
 import net.blay09.mods.craftingforblockheads.api.WorkshopPredicate;
-import net.blay09.mods.craftingforblockheads.registry.CraftingForBlockheadsRegistry;
-import net.blay09.mods.craftingforblockheads.registry.DataDrivenProviderFactory;
-import net.blay09.mods.craftingforblockheads.registry.IngredientItemFilter;
-import net.blay09.mods.craftingforblockheads.registry.NbtIngredientItemFilter;
+import net.blay09.mods.craftingforblockheads.registry.*;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.FileToIdConverter;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.GsonHelper;
@@ -117,6 +115,12 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
 
         for (int i = 0; i < jsonArray.size(); i++) {
             final var jsonObject = jsonArray.get(i).getAsJsonObject();
+            if (jsonObject.has("recipe")) {
+                final var recipeId = new ResourceLocation(GsonHelper.getAsString(jsonObject, "recipe"));
+                itemFilters.add(new RecipeFilter(recipeId));
+                continue;
+            }
+
             final var ingredient = Ingredient.fromJson(jsonObject, false);
             if (ingredient.isEmpty()) {
                 continue;
