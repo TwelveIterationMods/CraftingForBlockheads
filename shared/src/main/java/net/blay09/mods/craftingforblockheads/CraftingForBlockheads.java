@@ -27,6 +27,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -215,7 +216,7 @@ public class CraftingForBlockheads {
             final var level = player.level();
             final var pos = event.getHitResult().getBlockPos();
             final var state = level.getBlockState(pos);
-            if (state.is(ModBlockTags.IS_WORKSHOP_CORE)) {
+            if (state.is(ModBlockTags.IS_WORKSHOP_CORE) && (!player.isShiftKeyDown() || player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty())) {
                 Balm.getNetworking().openGui(player, new BalmMenuProvider() {
                     @Override
                     public Component getDisplayName() {
