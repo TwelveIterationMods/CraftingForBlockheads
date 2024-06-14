@@ -11,7 +11,7 @@ jobs:
       packages: write
     strategy:
       matrix:
-        loader: [common, fabric, forge]
+        loader: [shared, fabric, forge]
       fail-fast: false
     steps:
       - name: Checkout repository
