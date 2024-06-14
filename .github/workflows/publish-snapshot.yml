@@ -11,7 +11,7 @@ jobs:
       packages: write
     strategy:
       matrix:
-        loader: [common, fabric, forge, neoforge]
+        loader: [common, fabric, forge]
       fail-fast: false
     steps:
       - name: Checkout repository
@@ -27,7 +27,7 @@ jobs:
         run: chmod +x ./gradlew
       - name: Extracting version from properties
         shell: bash
-        run: echo "version=$(cat gradle.properties | grep -w "\bversion" | cut -d= -f2)" >> $GITHUB_OUTPUT
+        run: echo "version=$(cat gradle.properties | grep -w "\bmod_version" | cut -d= -f2)" >> $GITHUB_OUTPUT
         id: extract-version
       - name: Bumping version
         uses: TwelveIterationMods/bump-version@v1
