@@ -86,6 +86,7 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
     }
 
     private void refreshFilterButtons() {
+        int xOffset = -20;
         int yOffset = -80;
 
         filterButtons.clear();
@@ -94,11 +95,15 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
                 .stream()
                 .sorted(Comparator.comparingInt(WorkshopFilterWithStatus::priority).reversed()).toList();
         for (WorkshopFilterWithStatus filter : availableFilters) {
-            FilterButton filterButton = new FilterButton(leftPos - 20, height / 2 + yOffset, filter, menu);
+            FilterButton filterButton = new FilterButton(leftPos + xOffset, height / 2 + yOffset, filter, menu);
             addRenderableWidget(filterButton);
             filterButtons.add(filterButton);
 
             yOffset += 20;
+            if (yOffset >= imageHeight - 100) {
+                xOffset -= 20;
+                yOffset = -80;
+            }
         }
     }
 
