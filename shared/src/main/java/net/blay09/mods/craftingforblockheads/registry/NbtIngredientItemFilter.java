@@ -51,4 +51,12 @@ public class NbtIngredientItemFilter extends IngredientItemFilter {
 
         return items;
     }
+
+    public CompoundTag getNbt() {
+        return nbt;
+    }
+
+    public boolean isStrict() {
+        return strict;
+    }
 }

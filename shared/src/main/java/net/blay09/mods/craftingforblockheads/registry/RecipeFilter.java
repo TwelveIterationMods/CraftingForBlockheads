@@ -27,4 +27,8 @@ public class RecipeFilter implements ItemFilter {
     public ItemStack[] getItems() {
         return new ItemStack[0];
     }
+
+    public ResourceLocation getRecipeId() {
+        return recipeId;
+    }
 }

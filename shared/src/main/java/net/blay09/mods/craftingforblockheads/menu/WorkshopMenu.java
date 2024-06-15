@@ -49,10 +49,8 @@ public class WorkshopMenu extends AbstractContainerMenu {
     private Comparator<RecipeWithStatus> currentSorting = new CraftableComparator();
 
     private List<RecipeWithStatus> craftables = new ArrayList<>();
-    private Set<String> fulfilledPredicates = new HashSet<>();
-    private Map<String, WorkshopFilterWithStatus> availableFilters = new HashMap<>();
+    private final Map<String, WorkshopFilterWithStatus> availableFilters;
 
-    private boolean filtersDirty = true;
     private boolean craftablesDirty = true;
     private boolean recipesDirty = true;
     private boolean isDirtyClient;
@@ -61,15 +59,14 @@ public class WorkshopMenu extends AbstractContainerMenu {
     private List<RecipeWithStatus> recipesForSelection;
     private int recipesForSelectionIndex;
 
-    public WorkshopMenu(MenuType<WorkshopMenu> containerType, int windowId, Player player, WorkshopImpl workshop) {
+    public WorkshopMenu(MenuType<WorkshopMenu> containerType, int windowId, Player player, Map<String, WorkshopFilterWithStatus> availableFilters, WorkshopImpl workshop) {
         super(containerType, windowId);
 
         this.player = player;
         this.workshop = workshop;
 
-        final var fulfilledPredicates = workshop.getFulfilledPredicates(player);
-        currentFilter = workshop.getAvailableFilters(fulfilledPredicates).values()
-                .stream()
+        this.availableFilters = availableFilters;
+        currentFilter = availableFilters.values().stream()
                 .filter(WorkshopFilterWithStatus::available)
                 .map(WorkshopFilterWithStatus::filter)
                 .max(Comparator.comparing(WorkshopFilter::getPriority))
@@ -100,7 +97,6 @@ public class WorkshopMenu extends AbstractContainerMenu {
                     public void setChanged() {
                         craftablesDirty = true;
                         recipesDirty = true;
-                        filtersDirty = true;
                     }
                 });
             }
@@ -112,7 +108,6 @@ public class WorkshopMenu extends AbstractContainerMenu {
                 public void setChanged() {
                     craftablesDirty = true;
                     recipesDirty = true;
-                    filtersDirty = true;
                 }
             });
         }
@@ -147,11 +142,6 @@ public class WorkshopMenu extends AbstractContainerMenu {
     @Override
     public void broadcastChanges() {
         super.broadcastChanges();
-        if (filtersDirty) {
-            broadcastFulfilledPredicates();
-            filtersDirty = false;
-        }
-
         if (craftablesDirty) {
             broadcastCraftables(currentFilter != null ? currentFilter.getId() : null);
             craftablesDirty = false;
@@ -691,18 +681,6 @@ public class WorkshopMenu extends AbstractContainerMenu {
         if (selectedCraftable != null) {
             requestRecipes(selectedCraftable);
         }
-    }
-
-    public void broadcastFulfilledPredicates() {
-        fulfilledPredicates = workshop.getFulfilledPredicates(player);
-        availableFilters = workshop.getAvailableFilters(fulfilledPredicates);
-
-        Balm.getNetworking().sendTo(player, new FulfilledPredicateListMessage(fulfilledPredicates));
-    }
-
-    public void setFulfilledPredicates(Set<String> fulfilledPredicates) {
-        this.fulfilledPredicates = fulfilledPredicates;
-        this.availableFilters = workshop.getAvailableFilters(fulfilledPredicates);
     }
 
     public Map<String, WorkshopFilterWithStatus> getAvailableFilters() {

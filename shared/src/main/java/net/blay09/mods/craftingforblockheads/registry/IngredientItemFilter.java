@@ -21,4 +21,8 @@ public class IngredientItemFilter implements ItemFilter {
     public ItemStack[] getItems() {
         return ingredient.getItems();
     }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
 }
