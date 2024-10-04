@@ -1,5 +1,6 @@
 package net.blay09.mods.craftingforblockheads.mixin;
 
+import com.mojang.datafixers.util.Pair;
 import net.blay09.mods.craftingforblockheads.tag.ModItemTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -31,11 +32,11 @@ public class RecipeManagerMixin {
     }
 
     @Inject(method = "getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/Container;Lnet/minecraft/world/level/Level;Lnet/minecraft/resources/ResourceLocation;)Ljava/util/Optional;", at = @At("RETURN"), cancellable = true)
-    public void getRecipeFor(RecipeType<?> recipeType, Container container, Level level, @Nullable ResourceLocation resourceLocation, CallbackInfoReturnable<Optional<Recipe<?>>> callbackInfo) {
+    public void getRecipeFor(RecipeType<?> recipeType, Container container, Level level, @Nullable ResourceLocation resourceLocation, CallbackInfoReturnable<Optional<Pair<ResourceLocation, Recipe<?>>>> callbackInfo) {
         final var result = callbackInfo.getReturnValue();
         if (result.isPresent()) {
             final var recipe = result.get();
-            final var resultItem = recipe.getResultItem(level.registryAccess());
+            final var resultItem = recipe.getSecond().getResultItem(level.registryAccess());
             if (resultItem.is(ModItemTags.IS_WORKSHOP_EXCLUSIVE)) {
                 callbackInfo.setReturnValue(Optional.empty());
             }
