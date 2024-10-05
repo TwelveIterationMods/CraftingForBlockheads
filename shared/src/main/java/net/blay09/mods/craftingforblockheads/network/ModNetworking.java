@@ -13,6 +13,7 @@ public class ModNetworking {
         networking.registerServerboundPacket(id("request_recipes"), RequestRecipesMessage.class, RequestRecipesMessage::encode, RequestRecipesMessage::decode, RequestRecipesMessage::handle);
         networking.registerServerboundPacket(id("craft_recipe"), CraftRecipeMessage.class, CraftRecipeMessage::encode, CraftRecipeMessage::decode, CraftRecipeMessage::handle);
 
+        networking.registerClientboundPacket(id("filters"), WorkshopFiltersMessage.class, WorkshopFiltersMessage::encode, WorkshopFiltersMessage::decode, WorkshopFiltersMessage::handle);
         networking.registerClientboundPacket(id("craftables"), CraftablesListMessage.class, CraftablesListMessage::encode, CraftablesListMessage::decode, CraftablesListMessage::handle);
         networking.registerClientboundPacket(id("recipes"), RecipesListMessage.class, RecipesListMessage::encode, RecipesListMessage::decode, RecipesListMessage::handle);
     }

@@ -3,6 +3,8 @@ package net.blay09.mods.craftingforblockheads.block;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.craftingforblockheads.CraftingForBlockheads;
 import net.blay09.mods.craftingforblockheads.block.entity.WorkbenchBlockEntity;
+import net.blay09.mods.craftingforblockheads.crafting.WorkshopImpl;
+import net.blay09.mods.craftingforblockheads.network.message.WorkshopFiltersMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -47,6 +49,7 @@ public class WorkbenchBlock extends BlockDyeableKitchen {
 
         if (!level.isClientSide) {
             Balm.getNetworking().openGui(player, blockEntity);
+            Balm.getNetworking().sendTo(player, new WorkshopFiltersMessage(new WorkshopImpl(level, pos), player));
         }
 
         return InteractionResult.SUCCESS;
