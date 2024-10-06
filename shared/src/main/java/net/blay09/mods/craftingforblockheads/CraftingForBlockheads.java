@@ -16,7 +16,7 @@ import net.blay09.mods.craftingforblockheads.item.ModItems;
 import net.blay09.mods.craftingforblockheads.menu.WorkshopMenu;
 import net.blay09.mods.craftingforblockheads.network.ModNetworking;
 import net.blay09.mods.craftingforblockheads.block.entity.ModBlockEntities;
-import net.blay09.mods.craftingforblockheads.network.WorkshopFilterSerialization;
+import net.blay09.mods.craftingforblockheads.network.message.WorkshopFiltersMessage;
 import net.blay09.mods.craftingforblockheads.registry.CraftingForBlockheadsRegistry;
 import net.blay09.mods.craftingforblockheads.registry.json.JsonCompatLoader;
 import net.blay09.mods.craftingforblockheads.tag.ModBlockTags;
@@ -234,15 +234,15 @@ public class CraftingForBlockheads {
 
                     @Override
                     public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
-                        final var workshop = new WorkshopImpl(level, pos);
-                        final var fulfilledPredicates = workshop.getFulfilledPredicates(player);
-                        final var availableFilters = workshop.getAvailableFilters(fulfilledPredicates);
                         buf.writeBlockPos(pos);
-                        WorkshopFilterSerialization.writeAvailableFilters(buf, availableFilters);
                     }
                 });
                 event.setResult(InteractionResult.SUCCESS);
                 event.setCanceled(true);
+
+                if (player instanceof ServerPlayer) {
+                    Balm.getNetworking().sendTo(player, new WorkshopFiltersMessage(new WorkshopImpl(level, pos), player));
+                }
             }
         });
 
@@ -266,15 +266,15 @@ public class CraftingForBlockheads {
 
                     @Override
                     public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
-                        final var workshop = new WorkshopImpl(itemStack);
-                        final var fulfilledPredicates = workshop.getFulfilledPredicates(player);
-                        final var availableFilters = workshop.getAvailableFilters(fulfilledPredicates);
                         buf.writeItem(itemStack);
-                        WorkshopFilterSerialization.writeAvailableFilters(buf, availableFilters);
                     }
                 });
                 event.setResult(InteractionResult.SUCCESS);
                 event.setCanceled(true);
+
+                if (player instanceof ServerPlayer) {
+                    Balm.getNetworking().sendTo(player, new WorkshopFiltersMessage(new WorkshopImpl(itemStack), player));
+                }
             }
         });
     }
