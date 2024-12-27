@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "craftingforblockheads:block/workbench",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "craftingforblockheads:block/workbench"
+    },
+    "facing=south": {
+      "model": "craftingforblockheads:block/workbench",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "craftingforblockheads:block/workbench",
+      "y": 270
+    }
+  }
+}

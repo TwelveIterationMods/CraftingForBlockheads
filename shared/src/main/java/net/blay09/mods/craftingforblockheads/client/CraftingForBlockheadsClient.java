@@ -22,7 +22,6 @@ public class CraftingForBlockheadsClient {
         ModRenderers.initialize(BalmClient.getRenderers());
         ModScreens.initialize(BalmClient.getScreens());
         ModTextures.initialize(BalmClient.getTextures());
-        ModModels.initialize(BalmClient.getModels());
 
         Balm.getEvents().onEvent(RecipesUpdatedEvent.class, event -> CraftingForBlockheadsRegistry.reload(event.getRecipeManager(), event.getRegistryAccess()));
 

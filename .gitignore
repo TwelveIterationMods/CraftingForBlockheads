@@ -21,4 +21,4 @@ build
 eclipse
 run
 logs
-/shared/src/main/generated/.cache
+/shared/src/generated/resources/.cache

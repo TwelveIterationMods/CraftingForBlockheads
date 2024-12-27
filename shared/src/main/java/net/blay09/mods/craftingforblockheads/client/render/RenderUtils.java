@@ -2,7 +2,7 @@ package net.blay09.mods.craftingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.blay09.mods.craftingforblockheads.block.BlockKitchen;
+import net.blay09.mods.craftingforblockheads.block.WorkbenchBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -18,7 +18,7 @@ public class RenderUtils {
     }
 
     public static void applyBlockAngle(PoseStack poseStack, BlockState state, float angleOffset) {
-        float angle = state.getValue(BlockKitchen.FACING).toYRot();
+        float angle = state.getValue(WorkbenchBlock.FACING).toYRot();
         poseStack.translate(0.5, 0, 0.5);
         poseStack.mulPose(Axis.YP.rotationDegrees(angleOffset - angle));
     }

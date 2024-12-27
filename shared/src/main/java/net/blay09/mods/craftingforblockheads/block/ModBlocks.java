@@ -6,6 +6,7 @@ import net.blay09.mods.craftingforblockheads.CraftingForBlockheads;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class ModBlocks {
 
@@ -20,15 +21,19 @@ public class ModBlocks {
     public static Block tinkerersWorkbench;
 
     public static void initialize(BalmBlocks blocks) {
-        blocks.register(() -> workbench = new WorkbenchBlock(), () -> itemBlock(workbench), id("workbench"));
-        blocks.register(() -> carpentersWorkbench = new WorkbenchBlock(), () -> itemBlock(carpentersWorkbench), id("carpenters_workbench"));
-        blocks.register(() -> tailorsWorkbench = new WorkbenchBlock(), () -> itemBlock(tailorsWorkbench), id("tailors_workbench"));
-        blocks.register(() -> masonsWorkbench = new WorkbenchBlock(), () -> itemBlock(masonsWorkbench), id("masons_workbench"));
-        blocks.register(() -> armorersWorkbench = new WorkbenchBlock(), () -> itemBlock(armorersWorkbench), id("armorers_workbench"));
-        blocks.register(() -> fletchersWorkbench = new WorkbenchBlock(), () -> itemBlock(fletchersWorkbench), id("fletchers_workbench"));
-        blocks.register(() -> alchemistsWorkbench = new WorkbenchBlock(), () -> itemBlock(alchemistsWorkbench), id("alchemists_workbench"));
-        blocks.register(() -> engineersWorkbench = new WorkbenchBlock(), () -> itemBlock(engineersWorkbench), id("engineers_workbench"));
-        blocks.register(() -> tinkerersWorkbench = new WorkbenchBlock(), () -> itemBlock(tinkerersWorkbench), id("tinkerers_workbench"));
+        blocks.register(() -> workbench = new WorkbenchBlock(defaultProperties()), () -> itemBlock(workbench), id("workbench"));
+        blocks.register(() -> carpentersWorkbench = new WorkbenchBlock(defaultProperties()), () -> itemBlock(carpentersWorkbench), id("carpenters_workbench"));
+        blocks.register(() -> tailorsWorkbench = new WorkbenchBlock(defaultProperties()), () -> itemBlock(tailorsWorkbench), id("tailors_workbench"));
+        blocks.register(() -> masonsWorkbench = new WorkbenchBlock(defaultProperties()), () -> itemBlock(masonsWorkbench), id("masons_workbench"));
+        blocks.register(() -> armorersWorkbench = new WorkbenchBlock(defaultProperties()), () -> itemBlock(armorersWorkbench), id("armorers_workbench"));
+        blocks.register(() -> fletchersWorkbench = new WorkbenchBlock(defaultProperties()), () -> itemBlock(fletchersWorkbench), id("fletchers_workbench"));
+        blocks.register(() -> alchemistsWorkbench = new WorkbenchBlock(defaultProperties()), () -> itemBlock(alchemistsWorkbench), id("alchemists_workbench"));
+        blocks.register(() -> engineersWorkbench = new WorkbenchBlock(defaultProperties()), () -> itemBlock(engineersWorkbench), id("engineers_workbench"));
+        blocks.register(() -> tinkerersWorkbench = new WorkbenchBlock(defaultProperties()), () -> itemBlock(tinkerersWorkbench), id("tinkerers_workbench"));
+    }
+
+    private static BlockBehaviour.Properties defaultProperties() {
+        return BlockBehaviour.Properties.of();
     }
 
     private static BlockItem itemBlock(Block block) {

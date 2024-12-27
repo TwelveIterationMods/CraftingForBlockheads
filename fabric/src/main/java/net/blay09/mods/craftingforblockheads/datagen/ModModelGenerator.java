@@ -13,15 +13,15 @@ public class ModModelGenerator extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.workbench);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.carpentersWorkbench);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.tailorsWorkbench);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.masonsWorkbench);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.armorersWorkbench);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.fletchersWorkbench);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.alchemistsWorkbench);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.engineersWorkbench);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.tinkerersWorkbench);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.workbench);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.carpentersWorkbench);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.tailorsWorkbench);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.masonsWorkbench);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.armorersWorkbench);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.fletchersWorkbench);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.alchemistsWorkbench);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.engineersWorkbench);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.tinkerersWorkbench);
     }
 
     @Override

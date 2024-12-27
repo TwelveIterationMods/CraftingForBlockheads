@@ -25,6 +25,8 @@ dependencies {
 
 apply from: 'dependencies.gradle'
 
+sourceSets.main.resources.srcDir('src/generated/resources')
+
 jar {
     from(rootProject.file("LICENSE")) {
         rename { "${it}_${mod_id}" }
