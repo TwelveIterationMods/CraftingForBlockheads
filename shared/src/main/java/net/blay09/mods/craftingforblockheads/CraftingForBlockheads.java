@@ -215,6 +215,10 @@ public class CraftingForBlockheads {
         Balm.getEvents().onEvent(UseBlockEvent.class, event -> {
             final var player = event.getPlayer();
             final var level = player.level();
+            if (level.isClientSide) {
+                return;
+            }
+
             final var pos = event.getHitResult().getBlockPos();
             final var state = level.getBlockState(pos);
             if (state.is(ModBlockTags.IS_WORKSHOP_CORE) && (!player.isShiftKeyDown() || player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty())) {
