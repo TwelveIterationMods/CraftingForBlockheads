@@ -21,14 +21,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public void buildRecipes(Consumer<FinishedRecipe> exporter) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.workbench)
-                .pattern("SSS")
-                .pattern("CBC")
-                .pattern("CCC")
-                .define('S', TagKey.create(Registries.ITEM, new ResourceLocation("balm", "stones")))
-                .define('C', Blocks.TERRACOTTA)
-                .define('B', Items.DIAMOND)
-                .unlockedBy("has_diamond", has(Items.DIAMOND))
-                .save(exporter);
+        // ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.workbench)
+        //         .pattern("SSS")
+        //         .pattern("CBC")
+        //         .pattern("CCC")
+        //         .define('S', TagKey.create(Registries.ITEM, new ResourceLocation("balm", "stones")))
+        //         .define('C', Blocks.TERRACOTTA)
+        //         .define('B', Items.DIAMOND)
+        //         .unlockedBy("has_diamond", has(Items.DIAMOND))
+        //         .save(exporter);
     }
 }
