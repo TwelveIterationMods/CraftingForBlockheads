@@ -215,7 +215,7 @@ public class CraftingForBlockheads {
         Balm.getEvents().onEvent(UseBlockEvent.class, event -> {
             final var player = event.getPlayer();
             final var level = player.level();
-            if (level.isClientSide) {
+            if (level.isClientSide || event.getHand() != InteractionHand.MAIN_HAND) {
                 return;
             }
 
