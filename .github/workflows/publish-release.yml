@@ -33,7 +33,7 @@ jobs:
         id: bump-version
       - name: Updating version properties
         run: |
-          sed -i "s/^\s*version\s*=.*/mod_version = ${{ steps.bump-version.outputs.version }}/g" gradle.properties
+          sed -i "s/^\s*mod_version\s*=.*/mod_version = ${{ steps.bump-version.outputs.version }}/g" gradle.properties
           git config user.name "GitHub Actions"
           git config user.email "<>"
           git commit -am "Set version to ${{ steps.bump-version.outputs.version }}"
@@ -62,11 +62,11 @@ jobs:
         with:
           ref: ${{ needs.create-release.outputs.ref }}
       - name: Validate gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/actions/wrapper-validation@v3
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
-          java-version: 21
+          java-version: 17
           distribution: temurin
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
