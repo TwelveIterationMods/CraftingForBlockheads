@@ -49,7 +49,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
     private Comparator<RecipeWithStatus> currentSorting = new CraftableComparator();
 
     private List<RecipeWithStatus> craftables = new ArrayList<>();
-    private final Map<String, WorkshopFilterWithStatus> availableFilters;
+    private Map<String, WorkshopFilterWithStatus> availableFilters;
 
     private boolean craftablesDirty = true;
     private boolean recipesDirty = true;
@@ -65,12 +65,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
         this.player = player;
         this.workshop = workshop;
 
-        this.availableFilters = availableFilters;
-        currentFilter = availableFilters.values().stream()
-                .filter(WorkshopFilterWithStatus::available)
-                .map(WorkshopFilterWithStatus::filter)
-                .max(Comparator.comparing(WorkshopFilter::getPriority))
-                .orElse(null);
+        setAvailableFilters(availableFilters);
 
         Container fakeInventory = new DefaultContainer(5 * 4 + 3 * 3);
 
@@ -681,6 +676,16 @@ public class WorkshopMenu extends AbstractContainerMenu {
         if (selectedCraftable != null) {
             requestRecipes(selectedCraftable);
         }
+    }
+
+    public void setAvailableFilters(Map<String, WorkshopFilterWithStatus> availableFilters) {
+        this.availableFilters = availableFilters;
+
+        currentFilter = availableFilters.values().stream()
+                .filter(WorkshopFilterWithStatus::available)
+                .map(WorkshopFilterWithStatus::filter)
+                .max(Comparator.comparing(WorkshopFilter::getPriority))
+                .orElse(null);
     }
 
     public Map<String, WorkshopFilterWithStatus> getAvailableFilters() {

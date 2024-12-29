@@ -1,6 +1,8 @@
 package net.blay09.mods.craftingforblockheads.block;
 
 import net.blay09.mods.craftingforblockheads.block.entity.WorkbenchBlockEntity;
+import net.blay09.mods.craftingforblockheads.crafting.WorkshopImpl;
+import net.blay09.mods.craftingforblockheads.network.message.WorkshopFiltersMessage;
 import net.blay09.mods.craftingforblockheads.util.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
