@@ -13,12 +13,6 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
     public void generate() {
         add(ModBlocks.workbench, createSingleItemTable(ModBlocks.workbench));
         add(ModBlocks.carpentersWorkbench, createSingleItemTable(ModBlocks.carpentersWorkbench));
-        add(ModBlocks.tailorsWorkbench, createSingleItemTable(ModBlocks.tailorsWorkbench));
-        add(ModBlocks.masonsWorkbench, createSingleItemTable(ModBlocks.masonsWorkbench));
-        add(ModBlocks.armorersWorkbench, createSingleItemTable(ModBlocks.armorersWorkbench));
-        add(ModBlocks.fletchersWorkbench, createSingleItemTable(ModBlocks.fletchersWorkbench));
-        add(ModBlocks.alchemistsWorkbench, createSingleItemTable(ModBlocks.alchemistsWorkbench));
         add(ModBlocks.engineersWorkbench, createSingleItemTable(ModBlocks.engineersWorkbench));
-        add(ModBlocks.tinkerersWorkbench, createSingleItemTable(ModBlocks.tinkerersWorkbench));
     }
 }

@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:crossbow",
+    "minecraft:bow",
+    "minecraft:arrow",
+    "minecraft:spectral_arrow",
+    "minecraft:tipped_arrow"
+  ]
+}

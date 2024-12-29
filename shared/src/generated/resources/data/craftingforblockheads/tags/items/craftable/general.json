@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:stick",
+    "minecraft:torch",
+    "minecraft:crafting_table",
+    "minecraft:furnace",
+    "minecraft:chest",
+    "minecraft:wooden_axe",
+    "minecraft:wooden_hoe",
+    "minecraft:wooden_pickaxe",
+    "minecraft:wooden_shovel",
+    "minecraft:wooden_sword",
+    "minecraft:oak_planks",
+    "minecraft:spruce_planks",
+    "minecraft:birch_planks",
+    "minecraft:jungle_planks",
+    "minecraft:acacia_planks",
+    "minecraft:dark_oak_planks",
+    "minecraft:mangrove_planks",
+    "minecraft:cherry_planks",
+    "minecraft:bamboo_planks",
+    "minecraft:crimson_planks",
+    "minecraft:warped_planks",
+    "minecraft:campfire",
+    "minecraft:fishing_rod",
+    "minecraft:bone_meal",
+    "minecraft:flint_and_steel",
+    "minecraft:bowl",
+    "minecraft:book",
+    "craftingforblockheads:carpenters_workbench"
+  ]
+}

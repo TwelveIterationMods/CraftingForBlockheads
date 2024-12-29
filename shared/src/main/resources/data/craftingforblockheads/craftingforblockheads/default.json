@@ -1,0 +1,323 @@
+{
+  "modid": "craftingforblockheads",
+  "preset": "default",
+  "predicates": {
+    "has_carpenters_workbench": {
+      "type": "workshop_has",
+      "block": "craftingforblockheads:carpenters_workbench"
+    },
+    "has_workbench": {
+      "type": "workshop_has",
+      "block": "craftingforblockheads:workbench"
+    },
+    "has_stonecutter": {
+      "type": "workshop_has",
+      "block": "minecraft:stonecutter"
+    },
+    "has_loom": {
+      "type": "workshop_has",
+      "block": "minecraft:loom"
+    },
+    "has_engineers_workbench": {
+      "type": "workshop_has",
+      "block": "craftingforblockheads:engineers_workbench"
+    },
+    "has_anvil": {
+      "type": "workshop_has",
+      "block": "minecraft:anvil"
+    },
+    "has_fletching_table": {
+      "type": "workshop_has",
+      "block": "minecraft:fletching_table"
+    }
+  },
+  "groups": {
+    "minecraft:oak_planks": [
+      {
+        "tag": "minecraft:planks"
+      }
+    ],
+    "minecraft:oak_door": [
+      {
+        "tag": "minecraft:wooden_doors"
+      }
+    ],
+    "minecraft:oak_fence_gate": [
+      {
+        "tag": "minecraft:fence_gates"
+      }
+    ],
+    "minecraft:oak_fence": [
+      {
+        "tag": "minecraft:wooden_fences"
+      }
+    ],
+    "minecraft:oak_slab": [
+      {
+        "tag": "minecraft:wooden_slabs"
+      }
+    ],
+    "minecraft:oak_stairs": [
+      {
+        "tag": "minecraft:wooden_stairs"
+      }
+    ],
+    "minecraft:oak_trapdoor": [
+      {
+        "tag": "minecraft:wooden_trapdoors"
+      }
+    ],
+    "minecraft:oak_sign": [
+      {
+        "tag": "minecraft:signs"
+      }
+    ],
+    "minecraft:oak_hanging_sign": [
+      {
+        "tag": "minecraft:hanging_signs"
+      }
+    ],
+    "minecraft:white_banner": [
+      {
+        "tag": "minecraft:banners"
+      }
+    ],
+    "minecraft:white_carpet": [
+      {
+        "tag": "minecraft:wool_carpets"
+      }
+    ],
+    "minecraft:white_wool": [
+      {
+        "tag": "minecraft:wool"
+      }
+    ],
+    "minecraft:cobblestone_slab": [
+      {
+        "tag": "minecraft:slabs"
+      }
+    ],
+    "minecraft:cobblestone_stairs": [
+      {
+        "tag": "minecraft:stairs"
+      }
+    ],
+    "minecraft:cobblestone_wall": [
+      {
+        "tag": "minecraft:walls"
+      }
+    ],
+    "minecraft:sandstone": [
+      {
+        "item": "minecraft:sandstone"
+      },
+      {
+        "item": "minecraft:chiseled_sandstone"
+      },
+      {
+        "item": "minecraft:cut_sandstone"
+      }
+    ],
+    "minecraft:red_sandstone": [
+      {
+        "item": "minecraft:red_sandstone"
+      },
+      {
+        "item": "minecraft:chiseled_red_sandstone"
+      },
+      {
+        "item": "minecraft:cut_red_sandstone"
+      }
+    ],
+    "minecraft:polished_blackstone": [
+      {
+        "item": "minecraft:polished_blackstone"
+      },
+      {
+        "item": "minecraft:chiseled_polished_blackstone"
+      },
+      {
+        "item": "minecraft:polished_blackstone_bricks"
+      }
+    ],
+    "minecraft:quartz_block": [
+      {
+        "item": "minecraft:quartz_block"
+      },
+      {
+        "item": "minecraft:chiseled_quartz_block"
+      },
+      {
+        "item": "minecraft:quartz_bricks"
+      },
+      {
+        "item": "minecraft:quartz_pillar"
+      },
+      {
+        "item": "minecraft:smooth_quartz"
+      }
+    ],
+    "minecraft:polished_deepslate": [
+      {
+        "item": "minecraft:polished_deepslate"
+      },
+      {
+        "item": "minecraft:chiseled_deepslate"
+      },
+      {
+        "item": "minecraft:deepslate_bricks"
+      },
+      {
+        "item": "minecraft:deepslate_tiles"
+      }
+    ],
+    "minecraft:oak_button": [
+      {
+        "tag": "minecraft:wooden_buttons"
+      }
+    ],
+    "minecraft:oak_pressure_plate": [
+      {
+        "tag": "minecraft:wooden_pressure_plates"
+      }
+    ]
+  },
+  "filters": {
+    "sawmill": {
+      "name": "Sawmill",
+      "icon": {
+        "item": "craftingforblockheads:carpenters_workbench"
+      },
+      "includes": [
+        {
+          "tag": "craftingforblockheads:craftable/carpentry"
+        }
+      ],
+      "soft_requirements": [
+        "has_carpenters_workbench"
+      ],
+      "priority": 900
+    },
+    "general": {
+      "name": "Workbench",
+      "icon": {
+        "item": "minecraft:crafting_table"
+      },
+      "includes": [
+        {
+          "tag": "craftingforblockheads:craftable/general"
+        }
+      ],
+      "soft_requirements": [
+        "has_workbench"
+      ],
+      "priority": 1000
+    },
+    "masonry": {
+      "name": "Masonry",
+      "icon": {
+        "item": "minecraft:stonecutter"
+      },
+      "includes": [
+        {
+          "tag": "craftingforblockheads:craftable/masonry"
+        }
+      ],
+      "soft_requirements": [
+        "has_stonecutter"
+      ],
+      "priority": 700
+    },
+    "tailoring": {
+      "name": "Tailoring",
+      "icon": {
+        "item": "minecraft:loom"
+      },
+      "includes": [
+        {
+          "tag": "craftingforblockheads:craftable/tailoring"
+        }
+      ],
+      "soft_requirements": [
+        "has_loom"
+      ],
+      "priority": 800
+    },
+    "engineering": {
+      "name": "Engineering",
+      "icon": {
+        "item": "minecraft:hopper"
+      },
+      "includes": [
+        {
+          "tag": "craftingforblockheads:craftable/engineering"
+        }
+      ],
+      "soft_requirements": [
+        "has_engineers_workbench"
+      ],
+      "priority": 300
+    },
+    "tinkering": {
+      "name": "Tinkering",
+      "icon": {
+        "item": "minecraft:redstone"
+      },
+      "includes": [
+        {
+          "tag": "craftingforblockheads:craftable/tinkering"
+        }
+      ],
+      "soft_requirements": [
+        "has_engineers_workbench"
+      ],
+      "priority": 200
+    },
+    "blacksmithing": {
+      "name": "Blacksmithing",
+      "icon": {
+        "item": "minecraft:raw_iron"
+      },
+      "includes": [
+        {
+          "tag": "craftingforblockheads:craftable/blacksmithing"
+        }
+      ],
+      "soft_requirements": [
+        "has_anvil"
+      ],
+      "priority": 600
+    },
+    "precious_smithing": {
+      "name": "Precious Smithing",
+      "icon": {
+        "item": "minecraft:raw_gold"
+      },
+      "includes": [
+        {
+          "tag": "craftingforblockheads:craftable/precious_smithing"
+        }
+      ],
+      "hard_requirements": [
+        "has_anvil"
+      ],
+
+      "priority": 400
+    },
+    "fletching": {
+      "name": "Fletching",
+      "icon": {
+        "item": "minecraft:crossbow"
+      },
+      "includes": [
+        {
+          "tag": "craftingforblockheads:craftable/fletching"
+        }
+      ],
+      "soft_requirements": [
+        "has_fletching_table"
+      ],
+      "priority": 100
+    }
+  }
+}

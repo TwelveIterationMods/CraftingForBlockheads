@@ -18,13 +18,7 @@ public class ModBlockEntities {
                 () -> new Block[]{
                         ModBlocks.workbench,
                         ModBlocks.carpentersWorkbench,
-                        ModBlocks.tailorsWorkbench,
-                        ModBlocks.masonsWorkbench,
-                        ModBlocks.armorersWorkbench,
-                        ModBlocks.fletchersWorkbench,
-                        ModBlocks.alchemistsWorkbench,
-                        ModBlocks.engineersWorkbench,
-                        ModBlocks.tinkerersWorkbench
+                        ModBlocks.engineersWorkbench
                 });
     }
 

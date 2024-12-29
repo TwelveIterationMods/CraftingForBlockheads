@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:piston",
+    "minecraft:sticky_piston",
+    "minecraft:dispenser",
+    "minecraft:dropper",
+    "minecraft:rail",
+    "minecraft:activator_rail",
+    "minecraft:powered_rail",
+    "minecraft:detector_rail",
+    "minecraft:minecart",
+    "minecraft:chest_minecart",
+    "minecraft:tnt_minecart",
+    "minecraft:tnt",
+    "minecraft:furnace_minecart"
+  ]
+}

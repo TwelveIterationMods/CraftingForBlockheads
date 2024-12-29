@@ -15,13 +15,7 @@ public class ModModelGenerator extends FabricModelProvider {
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.workbench);
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.carpentersWorkbench);
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.tailorsWorkbench);
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.masonsWorkbench);
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.armorersWorkbench);
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.fletchersWorkbench);
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.alchemistsWorkbench);
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.engineersWorkbench);
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.tinkerersWorkbench);
     }
 
     @Override

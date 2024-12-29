@@ -23,25 +23,19 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         getOrCreateTagBuilder(TagKey.create(Registries.BLOCK, new ResourceLocation("minecraft", "mineable/axe"))).add(
                 ModBlocks.workbench,
                 ModBlocks.carpentersWorkbench,
-                ModBlocks.tailorsWorkbench,
-                ModBlocks.masonsWorkbench,
-                ModBlocks.armorersWorkbench,
-                ModBlocks.fletchersWorkbench,
-                ModBlocks.alchemistsWorkbench,
-                ModBlocks.engineersWorkbench,
-                ModBlocks.tinkerersWorkbench);
+                ModBlocks.engineersWorkbench);
 
         getOrCreateTagBuilder(ModBlockTags.WORKSHOP_ITEM_PROVIDER).add(Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.BARREL);
         getOrCreateTagBuilder(ModBlockTags.IS_WORKSHOP_CORE).add(
                         ModBlocks.workbench,
                         ModBlocks.carpentersWorkbench,
-                        ModBlocks.tailorsWorkbench,
-                        ModBlocks.masonsWorkbench,
-                        ModBlocks.armorersWorkbench,
-                        ModBlocks.fletchersWorkbench,
-                        ModBlocks.alchemistsWorkbench,
-                        ModBlocks.engineersWorkbench,
-                        ModBlocks.tinkerersWorkbench);
+                        ModBlocks.engineersWorkbench);
+        getOrCreateTagBuilder(ModBlockTags.WORKSHOP_CONNECTORS).add(
+                Blocks.LOOM,
+                Blocks.STONECUTTER,
+                Blocks.FLETCHING_TABLE,
+                Blocks.ANVIL
+        );
     }
 
 }

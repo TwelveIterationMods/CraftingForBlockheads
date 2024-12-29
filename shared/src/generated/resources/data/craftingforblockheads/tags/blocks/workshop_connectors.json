@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:loom",
+    "minecraft:stonecutter",
+    "minecraft:fletching_table",
+    "minecraft:anvil"
+  ]
+}

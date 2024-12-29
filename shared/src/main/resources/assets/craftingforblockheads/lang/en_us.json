@@ -1,6 +1,6 @@
 {
   "block.craftingforblockheads.workbench": "Workbench",
-  "block.craftingforblockheads.carpenters_workbench": "Carpenter's Workbench",
+  "block.craftingforblockheads.carpenters_workbench": "Sawmill",
   "block.craftingforblockheads.tailors_workbench": "Tailor's Workbench",
   "block.craftingforblockheads.masons_workbench": "Mason's Workbench",
   "block.craftingforblockheads.armorers_workbench": "Armorer's Workbench",
@@ -23,6 +23,15 @@
   "tooltip.craftingforblockheads.click_to_lock": "Right-Click to lock variant",
   "tooltip.craftingforblockheads.click_to_unlock": "Right-Click to reset variant",
   "tooltip.craftingforblockheads.scroll_to_switch": "Scroll to select item",
+  "tooltip.craftingforblockheads.missing_has_workbench": "Requires Workbench",
+  "tooltip.craftingforblockheads.missing_has_carpenters_workbench": "Requires Sawmill",
+  "tooltip.craftingforblockheads.missing_has_loom": "Requires Loom",
+  "tooltip.craftingforblockheads.missing_has_grindstone": "Requires Grindstone",
+  "tooltip.craftingforblockheads.missing_has_anvil": "Requires Anvil",
+  "tooltip.craftingforblockheads.missing_has_smithing_table": "Requires Smithing Table",
+  "tooltip.craftingforblockheads.missing_has_fletching_table": "Requires Fletching Table",
+  "tooltip.craftingforblockheads.missing_has_stonecutter": "Requires Stonecutter",
+  "tooltip.craftingforblockheads.missing_has_engineers_workbench": "Requires Engineer's Workbench",
   "itemGroup.craftingforblockheads.craftingforblockheads": "Crafting for Blockheads",
   "config.craftingforblockheads": "Crafting for Blockheads",
   "rei.craftingforblockheads.workshop.title": "Workshop"
