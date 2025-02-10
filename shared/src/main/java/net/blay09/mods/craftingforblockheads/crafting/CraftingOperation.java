@@ -52,7 +52,12 @@ public class CraftingOperation {
     }
 
     public CraftingOperation withLockedInputs(@Nullable NonNullList<ItemStack> lockedInputs) {
-        this.lockedInputs = lockedInputs;
+        this.lockedInputs = lockedInputs != null ? NonNullList.withSize(lockedInputs.size(), ItemStack.EMPTY) : null;
+        if (lockedInputs != null) {
+            for (int i = 0; i < lockedInputs.size(); i++) {
+                this.lockedInputs.set(i, lockedInputs.get(i));
+            }
+        }
         return this;
     }
 
@@ -70,7 +75,9 @@ public class CraftingOperation {
                 continue;
             }
 
-            final var lockedInput = lockedInputs != null ? lockedInputs.get(i) : ItemStack.EMPTY;
+            final var requestedLockedInput = lockedInputs != null ? lockedInputs.get(i) : ItemStack.EMPTY;
+            // Make sure the locked input is valid for the ingredient
+            final var lockedInput = ingredient.test(requestedLockedInput) ? requestedLockedInput : ItemStack.EMPTY;
             final var stackingIds = ingredient.getStackingIds();
             final var itemProviders = context.getItemProviders();
             var found = false;
@@ -94,6 +101,10 @@ public class CraftingOperation {
                     ingredientTokens.add(ingredientToken);
                     found = true;
                     break;
+                } else if (lockedInputs != null) {
+                    // If we didn't find an ingredient, reset lockedInput for this slot.
+                    // However, reset it to whatever was requested by the operation (if it matched the ingredient).
+                    lockedInputs.set(i, lockedInput);
                 }
             }
             if (!found) {

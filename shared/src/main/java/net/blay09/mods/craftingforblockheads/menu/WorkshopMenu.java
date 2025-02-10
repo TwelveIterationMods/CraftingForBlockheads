@@ -227,11 +227,11 @@ public class WorkshopMenu extends AbstractContainerMenu {
     }
 
     public void handleRequestRecipes(ItemStack resultItem, NonNullList<ItemStack> lockedInputs) {
-        selectedCraftable = findRecipeForResultItem(resultItem);
         this.lockedInputs.clear();
         for (int i = 0; i < lockedInputs.size(); i++) {
             this.lockedInputs.set(i, lockedInputs.get(i));
         }
+        selectedCraftable = findRecipeForResultItem(resultItem);
 
         recipesDirty = true;
     }
