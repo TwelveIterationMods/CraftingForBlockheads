@@ -39,6 +39,8 @@ public class WorkshopMenu extends AbstractContainerMenu {
     private final List<CraftableFakeSlot> craftableSlots = new ArrayList<>();
     private final List<CraftMatrixFakeSlot> matrixSlots = new ArrayList<>();
 
+    private final Comparator<RecipeWithStatus> recipeWithStatusComparator = new RecipeWithStatusComparator();
+
     private final NonNullList<ItemStack> lockedInputs = NonNullList.withSize(9, ItemStack.EMPTY);
 
     private final List<RecipeWithStatus> filteredItems = new ArrayList<>();
@@ -368,7 +370,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
                     operation.getLockedInputs()));
         }
 
-        result.sort(currentSorting);
+        result.sort(recipeWithStatusComparator);
         this.recipesForSelection = result;
         Balm.getNetworking().sendTo(player, new RecipesListMessage(result));
     }
@@ -692,4 +694,5 @@ public class WorkshopMenu extends AbstractContainerMenu {
     public Map<String, WorkshopFilterWithStatus> getAvailableFilters() {
         return availableFilters;
     }
+
 }
