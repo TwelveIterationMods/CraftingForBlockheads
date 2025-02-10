@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Crafting for Blockheads",
-  "description": "",
+  "description": "Adds a multiblock workshop with customizable crafting progression.",
   "authors": [
     "BlayTheNinth"
   ],

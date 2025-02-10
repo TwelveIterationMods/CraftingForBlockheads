@@ -5,13 +5,14 @@ issueTrackerURL="https://github.com/TwelveIterationMods/CraftingForBlockheads/is
 
 [[mods]]
 modId="craftingforblockheads"
-version="${mod_version}"
+version="${version}"
 displayName="CraftingForBlockheads"
 displayURL="https://mods.twelveiterations.com/mc/craftingforblockheads"
 logoFile="craftingforblockheads.png"
 credits="BlayTheNinth"
 authors="BlayTheNinth"
 description='''
+Adds a multiblock workshop with customizable crafting progression.
 '''
 
 [[dependencies.craftingforblockheads]]
