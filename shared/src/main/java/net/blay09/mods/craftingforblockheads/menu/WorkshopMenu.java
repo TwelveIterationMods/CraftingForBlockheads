@@ -24,7 +24,6 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -250,15 +249,17 @@ public class WorkshopMenu extends AbstractContainerMenu {
             final var result = new HashMap<ResourceLocation, RecipeWithStatus>();
             final var context = new CraftingContext(workshop, player);
             final var recipesByItemId = CraftingForBlockheadsRegistry.getRecipesByItemId();
-            for (ResourceLocation itemId : recipesByItemId.keySet()) {
-                for (Recipe<?> recipe : recipesByItemId.get(itemId)) {
+            for (final var itemId : recipesByItemId.keySet()) {
+                for (final var recipe : recipesByItemId.get(itemId)) {
+                    var effectiveItemId = itemId;
                     final var resultItem = recipe.getResultItem(player.level().registryAccess());
                     if (!filterMatches(recipe, resultItem)) {
                         continue;
                     }
 
-                    if (isGroupItem(resultItem)) {
-                        continue;
+                    final var group = getGroup(resultItem);
+                    if (group != null) {
+                        effectiveItemId = group;
                     }
 
                     final var operation = context.createOperation(recipe).prepare();
@@ -289,14 +290,14 @@ public class WorkshopMenu extends AbstractContainerMenu {
                             operation.getMissingIngredients(),
                             operation.getMissingIngredientsMask(),
                             operation.getLockedInputs());
-                    result.compute(itemId, (k, v) -> RecipeWithStatus.best(v, recipeWithStatus));
+                    result.compute(effectiveItemId, (k, v) -> RecipeWithStatus.best(v, recipeWithStatus));
                 }
             }
             return result.values().stream().toList();
         }
     }
 
-    private boolean isGroupItem(ItemStack resultItem) {
+    private ResourceLocation getGroup(ItemStack resultItem) {
         final var itemId = Balm.getRegistries().getKey(resultItem.getItem());
         for (final var group : CraftingForBlockheadsRegistry.getGroups()) {
             final var groupItemId = Balm.getRegistries().getKey(group.getParentItem());
@@ -306,12 +307,12 @@ public class WorkshopMenu extends AbstractContainerMenu {
 
             for (final var ingredient : group.getChildren()) {
                 if (ingredient.test(resultItem)) {
-                    return true;
+                    return groupItemId;
                 }
             }
         }
 
-        return false;
+        return null;
     }
 
     private Collection<Recipe<?>> getRecipesFor(ItemStack resultItem) {
