@@ -123,6 +123,7 @@ public class CraftingForBlockheadsRegistry {
 
     public static void reload(RecipeManager recipeManager, RegistryAccess registryAccess) {
         recipesByItemId.clear();
+        recipesByGroup.clear();
         loadRecipesByType(recipeManager, registryAccess, RecipeType.CRAFTING);
     }
 

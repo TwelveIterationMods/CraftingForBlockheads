@@ -315,7 +315,7 @@ public class WorkshopMenu extends AbstractContainerMenu {
     }
 
     private Collection<Recipe<?>> getRecipesFor(ItemStack resultItem) {
-        final var recipes = new ArrayList<>(CraftingForBlockheadsRegistry.getRecipesFor(resultItem));
+        final var recipes = new HashSet<>(CraftingForBlockheadsRegistry.getRecipesFor(resultItem));
         recipes.addAll(CraftingForBlockheadsRegistry.getRecipesInGroup(resultItem));
         return recipes;
     }
