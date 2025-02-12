@@ -151,6 +151,7 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
             return true;
         } else {
             if (searchBar.mouseClicked(mouseX, mouseY, button)) {
+                searchBar.setFocused(true);
                 return true;
             }
         }
@@ -181,7 +182,7 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
 
     @Override
     public boolean charTyped(char c, int keyCode) {
-        boolean result = super.charTyped(c, keyCode);
+        boolean result = searchBar.charTyped(c, keyCode);
 
         menu.search(searchBar.getValue());
         menu.updateCraftableSlots();
@@ -203,6 +204,8 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
             setCurrentOffset(currentOffset);
             return true;
         }
+        
+        
 
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
