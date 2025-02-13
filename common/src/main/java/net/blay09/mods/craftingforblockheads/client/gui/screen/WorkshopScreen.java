@@ -151,6 +151,7 @@ public class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
             return true;
         } else {
             if (searchBar.mouseClicked(mouseX, mouseY, button)) {
+                setFocused(searchBar);
                 return true;
             }
         }
