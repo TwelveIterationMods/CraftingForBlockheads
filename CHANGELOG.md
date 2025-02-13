@@ -1,4 +1,1 @@
-- Fixed wrong recipe being selected when clicking a recipe with multiple variants
-- Fixed wrong recipe being selected when scrolling through ingredient variants
-- Fixed wrong group item showing in the craftables list even if ingredients are available for a grouped item
-- Fixed recipe variants showing up twice when using grouped items
+- Fixed search bar not focussing on click
