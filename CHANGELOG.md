@@ -1,1 +1,1 @@
-- Fixed search bar not focussing on click
+- Fixed `craftingforblockheads:is_workshop_exclusive` tag not working on Fabric
